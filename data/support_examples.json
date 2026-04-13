@@ -64,7 +64,8 @@
     "intent": "order_status",
     "customer_query": "Where is my order ECO9999?",
     "context": {
-      "tracking_number": "ECO9999"
+      "tracking_number": "ECO9999",
+      "status": "not_found"
     },
     "assistant_response": "I could not find order ECO9999 in the system. Please verify the tracking number and try again. If you still need help, I can guide you further."
   },

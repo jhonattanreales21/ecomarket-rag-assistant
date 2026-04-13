@@ -11,6 +11,7 @@ from src.prompts import (
     build_general_prompt,
 )
 from src.llm_client import generate_llm_response
+from src.utils_format import format_order_response
 
 #  Page config and title
 st.set_page_config(page_title="EcoMarket Support Assistant", page_icon="🛍️")
@@ -68,19 +69,7 @@ if user_input:
                     generated_answer = generate_llm_response(prompt)
 
                     # Append a structured order summary below the LLM's natural-language reply
-                    answer = f"""
-{generated_answer}
-
-
-
-### 📦 Order details
-
-- **Order number:** {tracking}
-- **Status:** {order['status']}
-- **Estimated delivery:** {order['estimated_delivery']}
-
-🔗 [Track your order]({order['tracking_url']})
-"""
+                    answer = format_order_response(generated_answer, tracking, order)
                 else:
                     # Order ID was found in the message but does not exist in the database
                     answer = (
