@@ -4,13 +4,15 @@ from pathlib import Path
 EXAMPLES_PATH = Path("data/support_examples.json")
 
 
-def load_examples():
+def _load_examples():
+    """Load all few-shot examples from the JSON file."""
     with open(EXAMPLES_PATH, "r", encoding="utf-8") as f:
         return json.load(f)
 
 
-def format_examples_for_intent(intent: str, max_examples: int = 3) -> str:
-    examples = load_examples()
+def _format_examples_for_intent(intent: str, max_examples: int = 3) -> str:
+    """Return formatted few-shot example blocks for the given intent."""
+    examples = _load_examples()
     selected = [e for e in examples if e["intent"] == intent][:max_examples]
 
     if not selected:
@@ -19,17 +21,18 @@ def format_examples_for_intent(intent: str, max_examples: int = 3) -> str:
     blocks = []
     for ex in selected:
         blocks.append(
-            f"""Example
-Customer: {ex['customer_query']}
-Context: {json.dumps(ex['context'], ensure_ascii=False)}
-Assistant: {ex['assistant_response']}"""
+            f"Example\n"
+            f"Customer: {ex['customer_query']}\n"
+            f"Context: {json.dumps(ex['context'], ensure_ascii=False)}\n"
+            f"Assistant: {ex['assistant_response']}"
         )
 
     return "\n\n".join(blocks)
 
 
 def build_order_prompt(order: dict, user_query: str) -> str:
-    examples = format_examples_for_intent("order_status", max_examples=3)
+    """Build a prompt for order status queries, injecting order data and few-shot examples."""
+    examples = _format_examples_for_intent("order_status", max_examples=5)
 
     return f"""
 You are a professional customer support assistant for EcoMarket.
@@ -58,7 +61,8 @@ Write the best response for the customer.
 
 
 def build_return_prompt(policy_text: str, user_query: str) -> str:
-    examples = format_examples_for_intent("return_policy", max_examples=3)
+    """Build a prompt for return policy queries, injecting the policy text and few-shot examples."""
+    examples = _format_examples_for_intent("return_policy", max_examples=5)
 
     return f"""
 You are a professional customer support assistant for EcoMarket.
@@ -84,7 +88,8 @@ Write the best response for the customer.
 
 
 def build_human_prompt(user_query: str) -> str:
-    examples = format_examples_for_intent("human", max_examples=2)
+    """Build a prompt for escalation cases where the customer needs a human agent."""
+    examples = _format_examples_for_intent("human", max_examples=2)
 
     return f"""
 You are a professional customer support assistant for EcoMarket.
@@ -106,7 +111,8 @@ Write the best response for the customer.
 
 
 def build_general_prompt(user_query: str) -> str:
-    examples = format_examples_for_intent("general", max_examples=2)
+    """Build a prompt for general or out-of-scope queries."""
+    examples = _format_examples_for_intent("general", max_examples=2)
 
     return f"""
 You are a professional customer support assistant for EcoMarket.
