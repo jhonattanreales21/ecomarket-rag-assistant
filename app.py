@@ -14,7 +14,7 @@ from src.llm_client import generate_llm_response
 from src.utils_format import format_order_response
 
 #  Page config and title
-st.set_page_config(page_title="EcoMarket Support Assistant", page_icon="🛍️")
+st.set_page_config(page_title="EcoMarket Support Assistant", page_icon="🌿")
 st.title("EcoMarket Support Assistant")
 st.caption("Prototype for customer support automation in EcoMarket")
 
