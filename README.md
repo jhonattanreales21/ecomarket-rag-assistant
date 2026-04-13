@@ -1,295 +1,173 @@
-# Fase 3: Ingeniería de Prompts y Evaluación
+# EcoMarket RAG Assistant
 
-## 1. Objetivo
+![Status](https://img.shields.io/badge/status-proposal-yellow)
+![Domain](https://img.shields.io/badge/domain-e--commerce-blue)
+![Model](https://img.shields.io/badge/model-Gemma%202B-orange)
+![Interface](https://img.shields.io/badge/interface-Streamlit-red)
 
-El objetivo de esta fase es demostrar cómo el uso de prompts y ejemplos (few-shot prompting) impacta la calidad de las respuestas generadas por el modelo de lenguaje, en el contexto del servicio de atención al cliente de EcoMarket.
+**Authors**
 
-Para ello se implementó un sistema que combina:
-
-* un modelo open-source (Gemma 2B),
-* datos estructurados,
-* documentos de política,
-* y una biblioteca de ejemplos de conversaciones.
-
----
-
-## 2. Configuración del entorno
-
-### 2.1 Requisitos
-
-* Python 3.11
-* uv (gestor de entornos)
-* Ollama instalado
-* Streamlit
+| Name | Email |
+|---|---|
+| Andres Cano | andres.cano.consulting@gmail.com |
+| Jhonattan Reales | jhonatanreales21@gmail.com |
 
 ---
 
-### 2.2 Instalación del entorno
+## Overview
 
-Desde la raíz del proyecto:
+EcoMarket RAG Assistant is a hybrid intent-based customer support chatbot built for EcoMarket, a fictional sustainable products e-commerce company. The system automates responses to the most frequent support queries — order tracking, return policies, and general questions — while routing complaints and sensitive cases to a human agent.
+
+The architecture deliberately separates **structured data retrieval** from **language generation** to prevent the LLM from hallucinating business-critical information such as order statuses or return rules.
+
+---
+
+## How It Works
+
+```
+User message (Streamlit)
+  → Intent detection     — keyword-based router classifies the query
+  → Data retrieval       — order DB or return policy loaded as needed
+  → Prompt construction  — few-shot examples injected alongside the data
+  → LLM generation       — Gemma 2B via Ollama (temperature = 0)
+  → Response displayed   — structured card + natural language reply
+```
+
+**Four supported intents:**
+
+| Intent | Trigger keywords | What the bot does |
+|---|---|---|
+| `order_status` | "order", "tracking", "pedido" | Looks up the order and reports its status |
+| `return_policy` | "return", "refund", "devol" | Answers based on the return policy document |
+| `human` | "complaint", "queja" | Acknowledges frustration and escalates to a human agent |
+| `general` | anything else | Responds helpfully within the EcoMarket context |
+
+---
+
+## Tech Stack
+
+| Component | Technology |
+|---|---|
+| UI | Streamlit |
+| LLM | Gemma 2B (via Ollama) |
+| Prompt strategy | Few-shot prompting |
+| Data layer | JSON (orders) + Markdown (policy) |
+| Package manager | uv |
+
+---
+
+## Project Structure
+
+```
+ecomarket-rag-assistant/
+├── app.py                    # Streamlit entry point
+├── src/
+│   ├── router.py             # Intent detection
+│   ├── order_service.py      # Order lookup logic
+│   ├── returns_service.py    # Return policy loader
+│   ├── prompts.py            # Prompt builders (one per intent)
+│   ├── llm_client.py         # Ollama client wrapper
+│   └── utils_format.py       # Response formatting helpers
+├── data/
+│   ├── orders.json           # 10 mock orders (ECO1001–ECO1010)
+│   ├── returns_policy.md     # Return rules injected into prompts
+│   └── support_examples.json # Few-shot examples for all intents
+└── docs/                     # Academic documentation (in Spanish)
+```
+
+---
+
+## Prerequisites
+
+- Python 3.11+
+- [uv](https://github.com/astral-sh/uv) — fast Python package manager
+- [Ollama](https://ollama.com) — local LLM runtime
+
+---
+
+## Setup & Run
+
+> **Before you start:** Ollama must be installed on your machine. Download it from [ollama.com](https://ollama.com) and follow the instructions for your OS:
+>
+> | OS | Installation |
+> |---|---|
+> | **macOS** | Download the `.dmg` from ollama.com or run `brew install ollama` |
+> | **Windows** | Download the `.exe` installer from ollama.com or run `winget install Ollama.Ollama` |
+> | **Linux** | `curl -fsSL https://ollama.com/install.sh \| sh` |
+>
+> Verify the installation with `ollama --version` before proceeding.
+
+### 1. Clone the repository
+
+```bash
+git clone <repository-url>
+cd ecomarket-rag-assistant
+```
+
+### 2. Install dependencies
 
 ```bash
 uv sync
 ```
 
----
-
-### 2.3 Instalación de Ollama
-
-En Windows:
-
-```bash
-winget install Ollama.Ollama
-```
-
-Verificar instalación:
-
-```bash
-ollama --version
-```
-
----
-
-### 2.4 Descargar el modelo
+### 3. Download the model
 
 ```bash
 ollama pull gemma2:2b
 ```
 
----
+### 4. Start the Ollama server
 
-### 2.5 Levantar el servidor de Ollama
+Open a terminal and keep it running in the background:
 
 ```bash
 ollama serve
 ```
 
-Nota:
-Si aparece un error de "address already in use", significa que el servidor ya está corriendo.
+> If you see `address already in use`, the server is already running — you can skip this step.
 
----
+### 5. Launch the app
 
-### 2.6 Ejecutar la aplicación
-
-En otra terminal:
+Open a second terminal and run:
 
 ```bash
 uv run streamlit run app.py
 ```
 
-La aplicación estará disponible en:
-
-```
-http://localhost:8501
-```
+The chat interface will be available at **http://localhost:8501**
 
 ---
 
-## 3. Arquitectura de prompts
+## Interacting with the Bot
 
-El sistema utiliza distintos tipos de prompts dependiendo de la intención detectada:
+Once the app is running, type your message in the chat input at the bottom. Some examples to try:
 
-* Estado del pedido → `build_order_prompt`
-* Devoluciones → `build_return_prompt`
-* Escalamiento humano → `build_human_prompt`
-* General → `build_general_prompt`
+| Example message | Intent triggered |
+|---|---|
+| `"Where is my order ECO1005?"` | `order_status` |
+| `"I want to return a product I bought last week"` | `return_policy` |
+| `"I want to return an opened hygiene product"` | `return_policy` |
+| `"I am very frustrated, nobody has helped me"` | `human` (escalation) |
+| `"What kind of products does EcoMarket sell?"` | `general` |
 
-Cada prompt contiene:
-
-* instrucciones claras,
-* contexto estructurado,
-* ejemplos de conversaciones (few-shot).
-
----
-
-## 4. Biblioteca de ejemplos (Few-shot)
-
-Se creó un archivo:
-
-```
-data/support_examples.json
-```
-
-Este archivo contiene ejemplos de interacción cliente-agente para distintos escenarios:
-
-* pedido retrasado
-* pedido entregado
-* pedido en tránsito
-* devolución permitida
-* devolución no permitida
-* producto dañado
-* quejas y escalamiento
-
-Estos ejemplos se incorporan dinámicamente al prompt según la intención detectada.
+The sidebar shows which intent was detected for each message, which is useful for understanding how the routing logic works.
 
 ---
 
-## 5. Comparación: sin ejemplos vs con ejemplos
+## Documentation
 
-### 5.1 Prompt básico (sin ejemplos)
+Design decisions, risk analysis, ethical considerations, and prompt engineering results are documented in the [`docs/`](docs/) folder.
 
-Ejemplo de prompt:
+> **Note:** All documents are written in Spanish as part of an academic deliverable.
 
-```text
-You are a customer support assistant.
-Answer the user's question using the order data.
-```
-
-**Resultado esperado:**
-
-* Respuestas más simples
-* Menor empatía
-* Menor consistencia
-* Menor claridad
+| File | Content |
+|---|---|
+| [`taller_1_fase_1_modelo_y_arquitectura.md`](docs/taller_1_fase_1_modelo_y_arquitectura.md) | Model selection rationale and system architecture |
+| [`taller_1_fase_2_riesgos_y_etica.md`](docs/taller_1_fase_2_riesgos_y_etica.md) | Risks, ethics, and limitations |
+| [`taller_1_fase_3_Ingenieria_de_prompts_&_evaluacion.md`](docs/taller_1_fase_3_Ingenieria_de_prompts_&_evaluacion.md) | Prompt engineering approach and evaluation results |
 
 ---
 
-### 5.2 Prompt mejorado (con ejemplos)
+## Acknowledgments
 
-Ejemplo:
-
-* incluye ejemplos reales de soporte
-* define tono (empático, claro)
-* restringe al modelo (no inventar datos)
-
-**Resultado observado:**
-
-* Mayor naturalidad en el lenguaje
-* Respuestas más empáticas
-* Uso consistente de estructura
-* Mejor alineación con el negocio
-
----
-
-## 6. Casos de prueba
-
-### Caso 1: Pedido retrasado
-
-**Input:**
-
-```text
-Where is my order ECO1003?
-```
-
-**Output esperado:**
-
-* Respuesta empática
-* Explicación del estado
-* Fecha estimada
-* Link de tracking
-* Información estructurada adicional
-
----
-
-### Caso 2: Política de devolución
-
-**Input:**
-
-```text
-How can I return a product?
-```
-
-**Output esperado:**
-
-* Explicación clara de la política
-* Lenguaje natural
-* Solicitud de información adicional
-
----
-
-### Caso 3: Producto no retornable
-
-**Input:**
-
-```text
-I want to return an opened hygiene product.
-```
-
-**Output esperado:**
-
-* Negativa clara
-* Explicación respetuosa
-* Alternativa (si aplica)
-
----
-
-### Caso 4: Escalamiento a humano
-
-**Input:**
-
-```text
-I am very upset and want to complain
-```
-
-**Output esperado:**
-
-* Respuesta empática
-* Escalamiento a agente humano
-
----
-
-## 7. Evaluación del modelo (Gemma 2B)
-
-### Fortalezas observadas
-
-* Buen desempeño en generación de lenguaje natural
-* Capacidad de seguir instrucciones del prompt
-* Mejora significativa al usar ejemplos
-* Funciona adecuadamente en entorno local
-
----
-
-### Limitaciones observadas
-
-* Tiempo de respuesta elevado (dependiente del hardware)
-* Menor capacidad que modelos más grandes
-* Sensible al tamaño del prompt
-
----
-
-## 8. Decisiones de diseño clave
-
-### Separación de responsabilidades
-
-* Datos estructurados → verdad del negocio
-* LLM → generación del lenguaje
-
-Esto evita alucinaciones en información crítica.
-
----
-
-### Uso de few-shot prompting
-
-Se decidió usar ejemplos en lugar de fine-tuning porque:
-
-* es más simple
-* es más flexible
-* permite iteración rápida
-* no requiere reentrenamiento
-
----
-
-### Uso de modelo open-source
-
-Se utilizó Gemma 2B porque:
-
-* no requiere costos de API
-* permite ejecución local
-* es suficiente para un prototipo funcional
-
----
-
-## 9. Conclusión
-
-El uso de ingeniería de prompts, especialmente mediante few-shot prompting, mejora significativamente la calidad de las respuestas generadas por el modelo.
-
-La solución demuestra que es posible construir un sistema de atención al cliente funcional combinando:
-
-* IA generativa,
-* datos estructurados,
-* reglas de negocio,
-* y ejemplos bien diseñados.
-
-Aunque el modelo utilizado es relativamente pequeño, el diseño del prompt permite obtener resultados adecuados para el contexto del problema.
-
-En conclusión, el éxito del sistema no depende únicamente del modelo, sino del diseño del sistema y de los prompts utilizados.
+This project was developed as part of the Master's program in Applied Artificial Intelligence at ICESI University. Special thanks to our tutors and peers for their guidance and feedback.
