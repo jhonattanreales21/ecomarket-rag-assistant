@@ -1,0 +1,664 @@
+[
+  {
+    "id": "example_0",
+    "intent": "order_status",
+    "customer_query": "Where is my order ECO20101?",
+    "context": {
+      "tracking_number": "ECO20101",
+      "status": "In transit",
+      "estimated_delivery": "2026-04-05",
+      "shipping_method": "Standard",
+      "shipping_region": "Canada",
+      "order_date": "2026-04-02",
+      "items": [
+        {
+          "product_id": "P0001",
+          "product_name": "Organic Whole Milk",
+          "category": "Dairy",
+          "quantity": 2,
+          "perishable": true
+        },
+        {
+          "product_id": "P0007",
+          "product_name": "Plant-Based Dish Soap",
+          "category": "Cleaning",
+          "quantity": 2,
+          "perishable": false
+        },
+        {
+          "product_id": "P0009",
+          "product_name": "Whole Grain Bread",
+          "category": "Bakery",
+          "quantity": 1,
+          "perishable": true
+        }
+      ],
+      "delay_reason": null
+    },
+    "assistant_response": "Your order ECO20101 is currently In transit. Estimated delivery is 2026-04-05. You can track it here: https://tracking.ecomarket.com/ECO20101"
+  },
+  {
+    "id": "example_1",
+    "intent": "order_status",
+    "customer_query": "Where is my order ECO20102?",
+    "context": {
+      "tracking_number": "ECO20102",
+      "status": "Processing",
+      "estimated_delivery": "2026-04-15",
+      "shipping_method": "Express",
+      "shipping_region": "US-East",
+      "order_date": "2026-04-08",
+      "items": [
+        {
+          "product_id": "P0005",
+          "product_name": "Sea Salt Veggie Chips",
+          "category": "Snacks",
+          "quantity": 1,
+          "perishable": false
+        },
+        {
+          "product_id": "P0009",
+          "product_name": "Whole Grain Bread",
+          "category": "Bakery",
+          "quantity": 1,
+          "perishable": true
+        },
+        {
+          "product_id": "P0006",
+          "product_name": "Natural Bamboo Toothbrush",
+          "category": "Personal Care",
+          "quantity": 3,
+          "perishable": false
+        }
+      ],
+      "delay_reason": null
+    },
+    "assistant_response": "Your order ECO20102 is currently Processing. Estimated delivery is 2026-04-15. You can track it here: https://tracking.ecomarket.com/ECO20102"
+  },
+  {
+    "id": "example_2",
+    "intent": "order_status",
+    "customer_query": "Where is my order ECO20112?",
+    "context": {
+      "tracking_number": "ECO20112",
+      "status": "Delivered",
+      "estimated_delivery": "2026-04-12",
+      "shipping_method": "Express",
+      "shipping_region": "US-East",
+      "order_date": "2026-04-10",
+      "items": [
+        {
+          "product_id": "P0008",
+          "product_name": "Frozen Mixed Berries",
+          "category": "Frozen",
+          "quantity": 1,
+          "perishable": true
+        }
+      ],
+      "delay_reason": null
+    },
+    "assistant_response": "Your order ECO20112 is currently Delivered. Estimated delivery is 2026-04-12. You can track it here: https://tracking.ecomarket.com/ECO20112"
+  },
+  {
+    "id": "example_3",
+    "intent": "order_status",
+    "customer_query": "Where is my order ECO20108?",
+    "context": {
+      "tracking_number": "ECO20108",
+      "status": "Delayed",
+      "estimated_delivery": "2026-04-16",
+      "shipping_method": "Standard",
+      "shipping_region": "US-West",
+      "order_date": "2026-04-09",
+      "items": [
+        {
+          "product_id": "P0005",
+          "product_name": "Sea Salt Veggie Chips",
+          "category": "Snacks",
+          "quantity": 3,
+          "perishable": false
+        },
+        {
+          "product_id": "P0002",
+          "product_name": "Fresh Baby Spinach",
+          "category": "Produce",
+          "quantity": 2,
+          "perishable": true
+        }
+      ],
+      "delay_reason": null
+    },
+    "assistant_response": "Your order ECO20108 is currently Delayed. Estimated delivery is 2026-04-16. You can track it here: https://tracking.ecomarket.com/ECO20108"
+  },
+  {
+    "id": "example_4",
+    "intent": "order_status",
+    "customer_query": "Where is my order ECO20109?",
+    "context": {
+      "tracking_number": "ECO20109",
+      "status": "Delivered",
+      "estimated_delivery": "2026-04-14",
+      "shipping_method": "Express",
+      "shipping_region": "US-West",
+      "order_date": "2026-04-09",
+      "items": [
+        {
+          "product_id": "P0006",
+          "product_name": "Natural Bamboo Toothbrush",
+          "category": "Personal Care",
+          "quantity": 2,
+          "perishable": false
+        },
+        {
+          "product_id": "P0001",
+          "product_name": "Organic Whole Milk",
+          "category": "Dairy",
+          "quantity": 3,
+          "perishable": true
+        }
+      ],
+      "delay_reason": null
+    },
+    "assistant_response": "Your order ECO20109 is currently Delivered. Estimated delivery is 2026-04-14. You can track it here: https://tracking.ecomarket.com/ECO20109"
+  },
+  {
+    "id": "example_5",
+    "intent": "order_status",
+    "customer_query": "Where is my order ECO20105?",
+    "context": {
+      "tracking_number": "ECO20105",
+      "status": "Delayed",
+      "estimated_delivery": "2026-04-03",
+      "shipping_method": "Standard",
+      "shipping_region": "Europe",
+      "order_date": "2026-04-01",
+      "items": [
+        {
+          "product_id": "P0005",
+          "product_name": "Sea Salt Veggie Chips",
+          "category": "Snacks",
+          "quantity": 3,
+          "perishable": false
+        },
+        {
+          "product_id": "P0006",
+          "product_name": "Natural Bamboo Toothbrush",
+          "category": "Personal Care",
+          "quantity": 1,
+          "perishable": false
+        }
+      ],
+      "delay_reason": null
+    },
+    "assistant_response": "Your order ECO20105 is currently Delayed. Estimated delivery is 2026-04-03. You can track it here: https://tracking.ecomarket.com/ECO20105"
+  },
+  {
+    "id": "example_6",
+    "intent": "order_status",
+    "customer_query": "Where is my order ECO20105?",
+    "context": {
+      "tracking_number": "ECO20105",
+      "status": "Delayed",
+      "estimated_delivery": "2026-04-03",
+      "shipping_method": "Standard",
+      "shipping_region": "Europe",
+      "order_date": "2026-04-01",
+      "items": [
+        {
+          "product_id": "P0005",
+          "product_name": "Sea Salt Veggie Chips",
+          "category": "Snacks",
+          "quantity": 3,
+          "perishable": false
+        },
+        {
+          "product_id": "P0006",
+          "product_name": "Natural Bamboo Toothbrush",
+          "category": "Personal Care",
+          "quantity": 1,
+          "perishable": false
+        }
+      ],
+      "delay_reason": null
+    },
+    "assistant_response": "Your order ECO20105 is currently Delayed. Estimated delivery is 2026-04-03. You can track it here: https://tracking.ecomarket.com/ECO20105"
+  },
+  {
+    "id": "example_7",
+    "intent": "order_status",
+    "customer_query": "Where is my order ECO20114?",
+    "context": {
+      "tracking_number": "ECO20114",
+      "status": "In transit",
+      "estimated_delivery": "2026-04-06",
+      "shipping_method": "Same-Day",
+      "shipping_region": "US-East",
+      "order_date": "2026-04-04",
+      "items": [
+        {
+          "product_id": "P0001",
+          "product_name": "Organic Whole Milk",
+          "category": "Dairy",
+          "quantity": 3,
+          "perishable": true
+        },
+        {
+          "product_id": "P0007",
+          "product_name": "Plant-Based Dish Soap",
+          "category": "Cleaning",
+          "quantity": 2,
+          "perishable": false
+        },
+        {
+          "product_id": "P0005",
+          "product_name": "Sea Salt Veggie Chips",
+          "category": "Snacks",
+          "quantity": 1,
+          "perishable": false
+        }
+      ],
+      "delay_reason": "High demand and logistics delay"
+    },
+    "assistant_response": "Your order ECO20114 is currently In transit. Estimated delivery is 2026-04-06. You can track it here: https://tracking.ecomarket.com/ECO20114"
+  },
+  {
+    "id": "example_8",
+    "intent": "order_status",
+    "customer_query": "Where is my order ECO20127?",
+    "context": {
+      "tracking_number": "ECO20127",
+      "status": "In transit",
+      "estimated_delivery": "2026-04-15",
+      "shipping_method": "Express",
+      "shipping_region": "Europe",
+      "order_date": "2026-04-10",
+      "items": [
+        {
+          "product_id": "P0001",
+          "product_name": "Organic Whole Milk",
+          "category": "Dairy",
+          "quantity": 3,
+          "perishable": true
+        },
+        {
+          "product_id": "P0003",
+          "product_name": "Grass-Fed Ground Beef",
+          "category": "Meat",
+          "quantity": 2,
+          "perishable": true
+        },
+        {
+          "product_id": "P0009",
+          "product_name": "Whole Grain Bread",
+          "category": "Bakery",
+          "quantity": 3,
+          "perishable": true
+        }
+      ],
+      "delay_reason": null
+    },
+    "assistant_response": "Your order ECO20127 is currently In transit. Estimated delivery is 2026-04-15. You can track it here: https://tracking.ecomarket.com/ECO20127"
+  },
+  {
+    "id": "example_9",
+    "intent": "order_status",
+    "customer_query": "Where is my order ECO20116?",
+    "context": {
+      "tracking_number": "ECO20116",
+      "status": "Delayed",
+      "estimated_delivery": "2026-04-06",
+      "shipping_method": "Express",
+      "shipping_region": "US-East",
+      "order_date": "2026-04-01",
+      "items": [
+        {
+          "product_id": "P0009",
+          "product_name": "Whole Grain Bread",
+          "category": "Bakery",
+          "quantity": 1,
+          "perishable": true
+        }
+      ],
+      "delay_reason": null
+    },
+    "assistant_response": "Your order ECO20116 is currently Delayed. Estimated delivery is 2026-04-06. You can track it here: https://tracking.ecomarket.com/ECO20116"
+  },
+  {
+    "id": "example_10",
+    "intent": "order_status",
+    "customer_query": "Where is my order ECO20129?",
+    "context": {
+      "tracking_number": "ECO20129",
+      "status": "Delayed",
+      "estimated_delivery": "2026-04-13",
+      "shipping_method": "Same-Day",
+      "shipping_region": "Europe",
+      "order_date": "2026-04-11",
+      "items": [
+        {
+          "product_id": "P0007",
+          "product_name": "Plant-Based Dish Soap",
+          "category": "Cleaning",
+          "quantity": 2,
+          "perishable": false
+        },
+        {
+          "product_id": "P0001",
+          "product_name": "Organic Whole Milk",
+          "category": "Dairy",
+          "quantity": 2,
+          "perishable": true
+        },
+        {
+          "product_id": "P0006",
+          "product_name": "Natural Bamboo Toothbrush",
+          "category": "Personal Care",
+          "quantity": 1,
+          "perishable": false
+        }
+      ],
+      "delay_reason": "High demand and logistics delay"
+    },
+    "assistant_response": "Your order ECO20129 is currently Delayed. Estimated delivery is 2026-04-13. You can track it here: https://tracking.ecomarket.com/ECO20129"
+  },
+  {
+    "id": "example_11",
+    "intent": "order_status",
+    "customer_query": "Where is my order ECO20107?",
+    "context": {
+      "tracking_number": "ECO20107",
+      "status": "Processing",
+      "estimated_delivery": "2026-04-14",
+      "shipping_method": "Express",
+      "shipping_region": "Canada",
+      "order_date": "2026-04-11",
+      "items": [
+        {
+          "product_id": "P0002",
+          "product_name": "Fresh Baby Spinach",
+          "category": "Produce",
+          "quantity": 2,
+          "perishable": true
+        },
+        {
+          "product_id": "P0004",
+          "product_name": "Sparkling Mineral Water",
+          "category": "Beverages",
+          "quantity": 1,
+          "perishable": false
+        },
+        {
+          "product_id": "P0008",
+          "product_name": "Frozen Mixed Berries",
+          "category": "Frozen",
+          "quantity": 1,
+          "perishable": true
+        }
+      ],
+      "delay_reason": null
+    },
+    "assistant_response": "Your order ECO20107 is currently Processing. Estimated delivery is 2026-04-14. You can track it here: https://tracking.ecomarket.com/ECO20107"
+  },
+  {
+    "id": "example_12",
+    "intent": "order_status",
+    "customer_query": "Where is my order ECO20110?",
+    "context": {
+      "tracking_number": "ECO20110",
+      "status": "Delayed",
+      "estimated_delivery": "2026-04-14",
+      "shipping_method": "Standard",
+      "shipping_region": "Canada",
+      "order_date": "2026-04-10",
+      "items": [
+        {
+          "product_id": "P0002",
+          "product_name": "Fresh Baby Spinach",
+          "category": "Produce",
+          "quantity": 2,
+          "perishable": true
+        },
+        {
+          "product_id": "P0007",
+          "product_name": "Plant-Based Dish Soap",
+          "category": "Cleaning",
+          "quantity": 1,
+          "perishable": false
+        }
+      ],
+      "delay_reason": null
+    },
+    "assistant_response": "Your order ECO20110 is currently Delayed. Estimated delivery is 2026-04-14. You can track it here: https://tracking.ecomarket.com/ECO20110"
+  },
+  {
+    "id": "example_13",
+    "intent": "order_status",
+    "customer_query": "Where is my order ECO20118?",
+    "context": {
+      "tracking_number": "ECO20118",
+      "status": "Delayed",
+      "estimated_delivery": "2026-04-10",
+      "shipping_method": "Standard",
+      "shipping_region": "US-West",
+      "order_date": "2026-04-07",
+      "items": [
+        {
+          "product_id": "P0005",
+          "product_name": "Sea Salt Veggie Chips",
+          "category": "Snacks",
+          "quantity": 1,
+          "perishable": false
+        }
+      ],
+      "delay_reason": null
+    },
+    "assistant_response": "Your order ECO20118 is currently Delayed. Estimated delivery is 2026-04-10. You can track it here: https://tracking.ecomarket.com/ECO20118"
+  },
+  {
+    "id": "example_14",
+    "intent": "order_status",
+    "customer_query": "Where is my order ECO20104?",
+    "context": {
+      "tracking_number": "ECO20104",
+      "status": "Delayed",
+      "estimated_delivery": "2026-04-07",
+      "shipping_method": "Same-Day",
+      "shipping_region": "Canada",
+      "order_date": "2026-04-01",
+      "items": [
+        {
+          "product_id": "P0005",
+          "product_name": "Sea Salt Veggie Chips",
+          "category": "Snacks",
+          "quantity": 3,
+          "perishable": false
+        },
+        {
+          "product_id": "P0004",
+          "product_name": "Sparkling Mineral Water",
+          "category": "Beverages",
+          "quantity": 3,
+          "perishable": false
+        }
+      ],
+      "delay_reason": "High demand and logistics delay"
+    },
+    "assistant_response": "Your order ECO20104 is currently Delayed. Estimated delivery is 2026-04-07. You can track it here: https://tracking.ecomarket.com/ECO20104"
+  },
+  {
+    "id": "example_15",
+    "intent": "order_status",
+    "customer_query": "Where is my order ECO20109?",
+    "context": {
+      "tracking_number": "ECO20109",
+      "status": "Delivered",
+      "estimated_delivery": "2026-04-14",
+      "shipping_method": "Express",
+      "shipping_region": "US-West",
+      "order_date": "2026-04-09",
+      "items": [
+        {
+          "product_id": "P0006",
+          "product_name": "Natural Bamboo Toothbrush",
+          "category": "Personal Care",
+          "quantity": 2,
+          "perishable": false
+        },
+        {
+          "product_id": "P0001",
+          "product_name": "Organic Whole Milk",
+          "category": "Dairy",
+          "quantity": 3,
+          "perishable": true
+        }
+      ],
+      "delay_reason": null
+    },
+    "assistant_response": "Your order ECO20109 is currently Delivered. Estimated delivery is 2026-04-14. You can track it here: https://tracking.ecomarket.com/ECO20109"
+  },
+  {
+    "id": "example_16",
+    "intent": "order_status",
+    "customer_query": "Where is my order ECO20100?",
+    "context": {
+      "tracking_number": "ECO20100",
+      "status": "Delayed",
+      "estimated_delivery": "2026-04-13",
+      "shipping_method": "Express",
+      "shipping_region": "Europe",
+      "order_date": "2026-04-07",
+      "items": [
+        {
+          "product_id": "P0006",
+          "product_name": "Natural Bamboo Toothbrush",
+          "category": "Personal Care",
+          "quantity": 3,
+          "perishable": false
+        },
+        {
+          "product_id": "P0001",
+          "product_name": "Organic Whole Milk",
+          "category": "Dairy",
+          "quantity": 1,
+          "perishable": true
+        },
+        {
+          "product_id": "P0003",
+          "product_name": "Grass-Fed Ground Beef",
+          "category": "Meat",
+          "quantity": 2,
+          "perishable": true
+        }
+      ],
+      "delay_reason": "High demand and logistics delay"
+    },
+    "assistant_response": "Your order ECO20100 is currently Delayed. Estimated delivery is 2026-04-13. You can track it here: https://tracking.ecomarket.com/ECO20100"
+  },
+  {
+    "id": "example_17",
+    "intent": "order_status",
+    "customer_query": "Where is my order ECO20114?",
+    "context": {
+      "tracking_number": "ECO20114",
+      "status": "In transit",
+      "estimated_delivery": "2026-04-06",
+      "shipping_method": "Same-Day",
+      "shipping_region": "US-East",
+      "order_date": "2026-04-04",
+      "items": [
+        {
+          "product_id": "P0001",
+          "product_name": "Organic Whole Milk",
+          "category": "Dairy",
+          "quantity": 3,
+          "perishable": true
+        },
+        {
+          "product_id": "P0007",
+          "product_name": "Plant-Based Dish Soap",
+          "category": "Cleaning",
+          "quantity": 2,
+          "perishable": false
+        },
+        {
+          "product_id": "P0005",
+          "product_name": "Sea Salt Veggie Chips",
+          "category": "Snacks",
+          "quantity": 1,
+          "perishable": false
+        }
+      ],
+      "delay_reason": "High demand and logistics delay"
+    },
+    "assistant_response": "Your order ECO20114 is currently In transit. Estimated delivery is 2026-04-06. You can track it here: https://tracking.ecomarket.com/ECO20114"
+  },
+  {
+    "id": "example_18",
+    "intent": "order_status",
+    "customer_query": "Where is my order ECO20111?",
+    "context": {
+      "tracking_number": "ECO20111",
+      "status": "Delayed",
+      "estimated_delivery": "2026-04-13",
+      "shipping_method": "Standard",
+      "shipping_region": "US-East",
+      "order_date": "2026-04-06",
+      "items": [
+        {
+          "product_id": "P0008",
+          "product_name": "Frozen Mixed Berries",
+          "category": "Frozen",
+          "quantity": 2,
+          "perishable": true
+        },
+        {
+          "product_id": "P0004",
+          "product_name": "Sparkling Mineral Water",
+          "category": "Beverages",
+          "quantity": 3,
+          "perishable": false
+        },
+        {
+          "product_id": "P0006",
+          "product_name": "Natural Bamboo Toothbrush",
+          "category": "Personal Care",
+          "quantity": 3,
+          "perishable": false
+        }
+      ],
+      "delay_reason": null
+    },
+    "assistant_response": "Your order ECO20111 is currently Delayed. Estimated delivery is 2026-04-13. You can track it here: https://tracking.ecomarket.com/ECO20111"
+  },
+  {
+    "id": "example_19",
+    "intent": "order_status",
+    "customer_query": "Where is my order ECO20110?",
+    "context": {
+      "tracking_number": "ECO20110",
+      "status": "Delayed",
+      "estimated_delivery": "2026-04-14",
+      "shipping_method": "Standard",
+      "shipping_region": "Canada",
+      "order_date": "2026-04-10",
+      "items": [
+        {
+          "product_id": "P0002",
+          "product_name": "Fresh Baby Spinach",
+          "category": "Produce",
+          "quantity": 2,
+          "perishable": true
+        },
+        {
+          "product_id": "P0007",
+          "product_name": "Plant-Based Dish Soap",
+          "category": "Cleaning",
+          "quantity": 1,
+          "perishable": false
+        }
+      ],
+      "delay_reason": null
+    },
+    "assistant_response": "Your order ECO20110 is currently Delayed. Estimated delivery is 2026-04-14. You can track it here: https://tracking.ecomarket.com/ECO20110"
+  }
+]
