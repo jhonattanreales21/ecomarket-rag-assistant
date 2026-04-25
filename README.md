@@ -89,8 +89,7 @@ ecomarket-rag-assistant/
 │   │   └── retriever.py                # Similarity search wrapper
 │   ├── services/
 │   │   ├── inventory_service.py        # Structured inventory lookup
-│   │   ├── order_service.py            # Structured order lookup
-│   │   └── returns_service.py          # Return policy loader
+│   │   └── order_service.py            # Structured order lookup
 │   └── ui_blocks/
 │       ├── chat_handler.py             # Intent router + response orchestrator
 │       └── sidebar.py                  # Streamlit sidebar rendering
@@ -104,10 +103,7 @@ ecomarket-rag-assistant/
 ├── vectorstore/
 │   └── faiss_index/                    # Auto-generated on first run
 └── docs/
-    ├── fase_1_rag_componentes.md       # Embedding model and vector store decisions
-    ├── fase_2_base_conocimiento.md     # Knowledge base, chunking, indexing
-    ├── fase_3_integracion_codigo.md    # End-to-end code walkthrough
-    └── eda_chunking_analysis.md        # Chunking EDA and justification
+
 ```
 
 ---
@@ -248,12 +244,22 @@ Or simply delete the `vectorstore/` directory and restart the app.
 
 ## Documentation
 
+### Taller 1 — Baseline Chatbot (`docs/taller1/`)
+
+| File | Content |
+|---|---|
+| [docs/taller1/taller_1_fase_1_modelo_y_arquitectura.md](docs/taller1/taller_1_fase_1_modelo_y_arquitectura.md) | Model selection, MVP vs. target architecture |
+| [docs/taller1/taller_1_fase_2_riesgos_y_etica.md](docs/taller1/taller_1_fase_2_riesgos_y_etica.md) | Risks, ethics, and limitations of the baseline system |
+| [docs/taller1/taller_1_fase_3_Ingenieria_de_prompts_&_evaluacion.md](docs/taller1/taller_1_fase_3_Ingenieria_de_prompts_&_evaluacion.md) | Prompt engineering design and evaluation |
+
+### Taller 2 — RAG Extension (`docs/`)
+
 | File | Content |
 |---|---|
 | [docs/taller2_fase_1_rag_componentes.md](docs/taller2_fase_1_rag_componentes.md) | Embedding model and vector store selection rationale |
 | [docs/taller2_fase_2_base_conocimiento.md](docs/taller2_fase_2_base_conocimiento.md) | Knowledge base, chunking strategy, indexing process |
 | [docs/taller2_fase_3_integracion_codigo.md](docs/taller2_fase_3_integracion_codigo.md) | End-to-end code walkthrough, limitations, example flow |
-| [docs/eda_chunking_analysis.md](docs/eda_chunking_analysis.md) | EDA-based chunking justification |
+| [docs/eda_chunking_analysis.md](docs/eda_chunking_analysis.md) | EDA-based chunking justification (chunk_size=391, overlap=45) |
 
 ---
 

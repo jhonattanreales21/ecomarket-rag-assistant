@@ -1,308 +1,254 @@
-# Phase 3: Code Integration — End-to-End RAG Pipeline
+# Fase 3: Integración y Ejecución del Código — Pipeline RAG End-to-End
 
-## Overview
+## 1. Introducción
 
-This document explains how the EcoMarket RAG system works end-to-end:
-from user input to generated response. It covers each module, the data flow
-between components, prompt construction, and how Streamlit ties everything together.
+Esta fase aterriza en código la arquitectura RAG propuesta para EcoMarket. A diferencia de las dos fases anteriores, que se enfocan en decisiones de diseño y preparación de la base de conocimiento, esta sección explica cómo se conectan los componentes del repositorio para construir un asistente virtual funcional.
 
----
+El objetivo principal es demostrar que el sistema no depende únicamente del conocimiento interno del modelo de lenguaje. En su lugar, cada respuesta se genera a partir de una combinación controlada de tres elementos: intención detectada, información recuperada desde la base de conocimiento y datos estructurados cuando la consulta lo requiere.
 
-## 1. System Architecture
-
-```
-User input (Streamlit chat)
-        │
-        ▼
-  detect_intent()  [src/core/router.py]
-        │
-        ├── order_status
-        │       ├── extract_tracking_number()  [src/core/utils.py]
-        │       ├── get_order()  [src/services/order_service.py]  ← structured truth
-        │       ├── retrieve_context_text()  [src/rag/retriever.py]  ← RAG enrichment
-        │       └── build_order_prompt()  [src/llm/prompts.py]
-        │
-        ├── return_policy
-        │       ├── retrieve_context_text(filter="returns_policy")
-        │       └── build_return_prompt()
-        │
-        ├── shipping
-        │       ├── retrieve_context_text(filter="shipping_policy")
-        │       └── build_shipping_prompt()
-        │
-        ├── inventory
-        │       ├── extract_product_id()  [src/core/utils.py]
-        │       ├── get_product_by_id() / get_products_by_name()  [src/services/inventory_service.py]
-        │       ├── retrieve_context_text()  ← RAG enrichment
-        │       └── build_inventory_prompt()
-        │
-        ├── product
-        │       ├── retrieve_context_text(filter="product_catalog")
-        │       └── build_product_prompt()
-        │
-        ├── human
-        │       └── build_human_prompt()
-        │
-        └── general
-                ├── retrieve_context_text()
-                └── build_general_prompt()
-                        │
-                        ▼
-              generate_llm_response()  [src/llm/llm_client.py]
-                        │
-                        ▼
-              Formatted response displayed in Streamlit
-```
+La solución implementada mantiene el principio central definido desde el Taller Práctico #1: el LLM no debe actuar como fuente de verdad. Su rol es redactar respuestas en lenguaje natural a partir de información previamente recuperada o consultada en fuentes internas.
 
 ---
 
-## 2. Module-by-Module Explanation
+## 3. Arquitectura general del sistema
 
-### 2.1 `src/core/router.py` — Intent Classification
+El sistema sigue un flujo modular, desde el mensaje del usuario hasta la respuesta final en la interfaz.
 
-```python
-def detect_intent(text: str) -> str
+```text
+Mensaje del usuario en Streamlit
+        ↓
+Detección de intención
+        ↓
+Búsqueda estructurada si aplica
+        ↓
+Recuperación RAG desde FAISS
+        ↓
+Construcción del prompt
+        ↓
+Generación con Gemma 2B vía Ollama
+        ↓
+Respuesta final en Streamlit
 ```
 
-Classifies the user input into one of seven intents using keyword matching:
-`human`, `order_status`, `return_policy`, `shipping`, `inventory`, `product`, `general`.
+La arquitectura implementa siete intenciones principales:
 
-Keyword matching is simple, fast, and transparent. It avoids the latency of
-asking the LLM to classify intent before generating a response. The priority
-order ensures that escalation (`human`) always takes precedence.
-
-**Limitation:** Keyword matching can fail on ambiguous queries. A future upgrade
-could use a fine-tuned classifier or a fast embedding-based classifier.
-
----
-
-### 2.2 `src/rag/document_loader.py` — Knowledge Base Loading
-
-Six loader functions convert raw files into LangChain `Document` objects:
-
-| Function | Source |
+| Intención | Propósito |
 |---|---|
-| `load_returns_policy()` | `returns_policy_extended.pdf` |
-| `load_shipping_policy()` | `shipping_policy.pdf` |
-| `load_inventory()` | `inventory_200_products_named.xlsx` |
-| `load_product_catalog()` | `product_catalog.xlsx` |
-| `load_orders_as_docs()` | `orders_enhanced.json` |
-| `load_support_examples()` | `support_examples_enhanced.json` |
+| `order_status` | Consultar estado de pedidos usando número de seguimiento |
+| `return_policy` | Responder preguntas sobre devoluciones y reembolsos |
+| `shipping` | Responder preguntas sobre envíos, tiempos y cobertura |
+| `inventory` | Consultar disponibilidad, perecibilidad y vencimientos |
+| `product` | Responder preguntas sobre productos del catálogo |
+| `human` | Escalar solicitudes complejas o emocionales |
+| `general` | Atender consultas generales usando la base de conocimiento completa |
 
-`load_all_documents()` aggregates all six sources and returns a flat list of Documents.
-
-Each Document has:
-- `page_content`: The text to embed
-- `metadata`: Source path, doc_type, and domain-specific fields
+Esta organización permite que cada tipo de consulta siga una ruta distinta, con fuentes de información y prompts especializados.
 
 ---
 
-### 2.3 `src/rag/rag_pipeline.py` — Vectorstore Build and Load
+## 4. Estructura modular del repositorio
 
-```python
-def get_vectorstore(force_rebuild: bool = False) -> FAISS
+El repositorio se organizó para separar responsabilidades y facilitar el mantenimiento del sistema. La estructura principal es la siguiente:
+
+```text
+ecomarket-rag-assistant/
+├── app.py
+├── src/
+│   ├── core/
+│   │   ├── router.py
+│   │   └── utils.py
+│   ├── llm/
+│   │   ├── llm_client.py
+│   │   └── prompts.py
+│   ├── rag/
+│   │   ├── document_loader.py
+│   │   ├── rag_pipeline.py
+│   │   └── retriever.py
+│   ├── services/
+│   │   ├── inventory_service.py
+│   │   └── order_service.py
+│   └── ui_blocks/
+│       ├── chat_handler.py
+│       └── sidebar.py
+├── data/
+├── vectorstore/
+└── docs/
 ```
 
-On first run:
-1. Calls `load_all_documents()`
-2. Splits with `RecursiveCharacterTextSplitter(chunk_size=700, chunk_overlap=100)`
-3. Generates embeddings with `HuggingFaceEmbeddings(all-MiniLM-L6-v2)`
-4. Builds FAISS index with `FAISS.from_documents()`
-5. Saves to `vectorstore/faiss_index/`
+Cada carpeta cumple una función específica:
 
-On subsequent runs:
-1. Detects that `vectorstore/faiss_index/index.faiss` exists
-2. Loads directly with `FAISS.load_local()`
-3. Skips all embedding computation
-
-The vectorstore is cached at the Streamlit session level with `@st.cache_resource`,
-so it is built at most once per server restart.
-
----
-
-### 2.4 `src/rag/retriever.py` — Similarity Search
-
-```python
-def retrieve_context_text(
-    query: str,
-    vectorstore: FAISS,
-    k: int = 4,
-    filter_doc_type: str | None = None,
-) -> Tuple[str, List[dict]]
-```
-
-Runs a FAISS similarity search:
-- Returns the top-k chunks sorted by cosine similarity score
-- Optionally filters by `doc_type` metadata (e.g., only return policy chunks)
-- Returns both the concatenated context text and a list of source metadata dicts
-
-The metadata list powers the "Retrieved sources" expander in the Streamlit sidebar.
-
-**Fallback behavior:** If a filtered search returns no results (e.g., no policy
-chunks match the query), the app falls back to an unfiltered search over the full
-knowledge base.
-
----
-
-### 2.5 `src/services/order_service.py` — Structured Order Lookup
-
-```python
-def get_order(tracking_number: str) -> dict | None
-```
-
-Loads `orders_enhanced.json` and returns the order dict that matches the
-tracking number (case-insensitive, punctuation-stripped). Returns `None` if not found.
-
-This is the **primary source of truth for orders** — the LLM is never allowed
-to invent or guess order status. The structured order dict is injected directly
-into the prompt as authoritative data.
-
----
-
-### 2.6 `src/services/inventory_service.py` — Structured Inventory Lookup
-
-```python
-def get_product_by_id(product_id: str) -> dict | None
-def get_products_by_name(name: str) -> list[dict]
-def format_product_summary(product: dict) -> str
-```
-
-Loads `inventory_200_products_named.xlsx` into a cached pandas DataFrame.
-Provides exact lookup by product ID and fuzzy lookup by product name.
-
-Like orders, inventory data is **structured truth** — it is not left to the LLM
-to interpret or synthesize. The `format_product_summary` function produces a
-Markdown table of key product facts that is appended to the LLM's response.
-
----
-
-### 2.7 `src/llm/prompts.py` — Prompt Construction
-
-Seven dedicated builders, one per intent:
-
-| Function | Intent |
+| Módulo | Responsabilidad |
 |---|---|
-| `build_order_prompt` | `order_status` |
-| `build_return_prompt` | `return_policy` |
-| `build_shipping_prompt` | `shipping` |
-| `build_product_prompt` | `product` |
-| `build_inventory_prompt` | `inventory` |
-| `build_human_prompt` | `human` |
-| `build_general_prompt` | `general` |
+| `core` | Detección de intención y utilidades compartidas |
+| `rag` | Carga documental, chunking, embeddings, FAISS y recuperación |
+| `services` | Consulta estructurada de pedidos e inventario |
+| `llm` | Construcción de prompts y generación de respuestas |
+| `ui_blocks` | Componentes auxiliares de la interfaz |
+| `app.py` | Punto de entrada de Streamlit |
 
-Each prompt includes:
-1. **Persona**: "You are a friendly, empathetic customer support agent for EcoMarket"
-2. **Grounding rule**: Explicit instruction not to invent facts
-3. **Retrieved context** (RAG): Relevant chunks from the vectorstore
-4. **Structured data** (when available): Order dict or product summary
-5. **Few-shot examples**: 2 examples from `support_examples_enhanced.json`
-6. **User question**: The raw user input
-
-The grounding rule is the most important safety mechanism:
-
-> "Answer ONLY based on the information provided below. Do NOT invent facts,
-> policies, or product details. If the provided context does not contain
-> enough information, say: 'I'm sorry, I don't have enough information...'"
+Esta separación permite que la lógica de negocio, la recuperación documental, la generación de lenguaje y la interfaz no queden mezcladas en un único archivo.
 
 ---
 
-### 2.8 `src/llm/llm_client.py` — LLM Generation
+## 5. Detección de intención y enrutamiento
+
+El primer paso del sistema es clasificar el mensaje del usuario. Esta tarea se implementa en `src/core/router.py` mediante la función `detect_intent()`.
+
+El router utiliza reglas basadas en palabras clave para clasificar la consulta en una de las siete intenciones soportadas. Por ejemplo, una consulta que incluya términos como `order`, `tracking` o un código tipo `ECO20105` se dirige al flujo de pedidos. Una pregunta con palabras como `return`, `refund` o `exchange` se dirige al flujo de devoluciones.
+
+Esta estrategia fue elegida por su simplicidad, velocidad y transparencia. En un MVP académico, un router basado en reglas permite explicar claramente por qué una consulta siguió una ruta determinada. Además, evita usar el LLM para clasificar intención antes de generar la respuesta, reduciendo latencia y complejidad.
+
+Su principal limitación es que puede fallar ante consultas ambiguas o redactadas de forma poco común. En una visión profesional, este componente podría evolucionar hacia un clasificador basado en embeddings, un modelo supervisado o un router híbrido que combine reglas, similitud semántica y confianza de clasificación.
+
+---
+
+## 6. Carga de documentos y construcción del índice RAG
+
+La carga de documentos se implementa en `src/rag/document_loader.py`. Este módulo convierte diferentes tipos de archivos en objetos `Document` de LangChain, preservando tanto el contenido textual como metadatos útiles para la recuperación.
+
+Las fuentes incluidas son:
+
+| Fuente | Formato | Uso dentro del sistema |
+|---|---|---|
+| Política de devoluciones | PDF | Responder preguntas sobre elegibilidad, proceso y reembolsos |
+| Política de envíos | PDF | Responder preguntas sobre tiempos, cobertura y condiciones |
+| Inventario | Excel | Consultar stock, perecibilidad y vencimientos |
+| Catálogo de productos | Excel | Responder preguntas descriptivas sobre productos |
+| Pedidos | JSON | Consultar estados y contexto operativo de pedidos |
+| Ejemplos de soporte | JSON | Guiar tono, estructura y estilo de respuesta |
+
+Después de cargar los documentos, el pipeline RAG se ejecuta desde `src/rag/rag_pipeline.py`. El proceso general es:
+
+1. Cargar todos los documentos.
+2. Dividir los textos largos en chunks.
+3. Convertir cada chunk en un embedding.
+4. Construir el índice FAISS.
+5. Guardar el índice en disco.
+6. Reutilizar el índice en ejecuciones posteriores.
+
+La configuración de chunking utilizada está alineada con el análisis EDA realizado sobre los documentos del proyecto:
 
 ```python
-def generate_llm_response(prompt: str, max_tokens: int = 350) -> str
+RecursiveCharacterTextSplitter(
+    chunk_size=391,
+    chunk_overlap=45,
+    separators=["\n\n", "\n", ". ", " ", ""],
+)
 ```
 
-Sends the completed prompt to Gemma 2B via the Ollama Python client.
-- `temperature=0` for deterministic, factual responses
-- `max_tokens=350` — increased from 220 to accommodate longer RAG-grounded answers
-- Handles three error cases explicitly:
-  - Model not found → instructs user to run `ollama pull`
-  - Connection refused → instructs user to run `ollama serve`
-  - Unexpected error → surfaces the raw error message
+Esta configuración permite mantener intactos los registros estructurados de inventario, catálogo y pedidos, mientras divide los PDFs en fragmentos más pequeños y útiles para recuperación semántica. El índice se guarda en `vectorstore/faiss_index/`, evitando recalcular embeddings cada vez que se inicia la aplicación.
 
 ---
 
-### 2.9 `src/core/utils.py` — Shared Utilities
+## 7. Recuperación de contexto con FAISS
 
-```python
-def extract_tracking_number(text: str) -> str | None  # regex: ECO + digits
-def extract_product_id(text: str) -> str | None        # regex: P + 4 digits
-def format_order_response(llm_answer, tracking, order) -> str  # Markdown card
-```
+La recuperación semántica se implementa en `src/rag/retriever.py`. La función principal recibe la consulta del usuario, el índice FAISS y un número de fragmentos a recuperar. También puede aplicar filtros por tipo de documento cuando la intención lo requiere.
 
-Utility functions used by `app.py` to extract structured identifiers from
-free text and format the order response with a rich Markdown card.
+Por ejemplo:
 
----
-
-## 3. Streamlit App (`app.py`)
-
-The app coordinates all modules:
-
-1. **Initialization**: Loads the vectorstore with `@st.cache_resource` (once per session)
-2. **Sidebar**: Shows detected intent, RAG status, and retrieved sources
-3. **Chat history**: Persisted in `st.session_state.messages`
-4. **Message handling**: Routes each message through the intent-specific pipeline
-5. **Response display**: Renders Markdown responses with structured cards when available
-
-### Session state variables
-
-| Variable | Purpose |
+| Intención | Recuperación esperada |
 |---|---|
-| `messages` | Full chat history |
-| `last_intent` | Detected intent for sidebar display |
-| `last_sources` | Retrieved source metadata for sidebar |
-| `rag_used` | Boolean flag for sidebar RAG status |
+| `return_policy` | Fragmentos de la política de devoluciones |
+| `shipping` | Fragmentos de la política de envíos |
+| `product` | Fragmentos del catálogo de productos |
+| `general` | Búsqueda sobre toda la base de conocimiento |
+
+El resultado de la recuperación tiene dos usos. Primero, se concatena como contexto dentro del prompt enviado al modelo. Segundo, sus metadatos se muestran en la interfaz para hacer visible qué fuentes fueron recuperadas.
+
+Este diseño mejora la transparencia del sistema. El usuario no solo recibe una respuesta generada, sino que el sistema puede mostrar qué documentos o fragmentos sirvieron como soporte.
 
 ---
 
-## 4. Limitations and Assumptions
+## 8. Integración con datos estructurados
 
-### Limitations
+No todas las consultas deben resolverse únicamente con recuperación semántica. Para información crítica, como pedidos e inventario, el sistema usa búsqueda estructurada.
 
-1. **Keyword-based router**: The intent router uses simple keyword matching.
-   Complex or ambiguous queries may be misclassified (e.g., "I want to return
-   milk but my order hasn't arrived yet" could trigger `return_policy` instead
-   of `order_status`).
+El servicio `src/services/order_service.py` permite buscar pedidos por número de seguimiento. Si el usuario pregunta por un pedido como `ECO20105`, el sistema extrae ese identificador y consulta directamente el archivo de pedidos. La respuesta del LLM se construye usando esa información como fuente autoritativa.
 
-2. **Gemma 2B capacity**: Gemma 2B is a small model (2 billion parameters).
-   It may hallucinate if the retrieved context is insufficient, or produce
-   vague answers for complex policy questions. The grounding rules mitigate
-   this but cannot eliminate it entirely.
+De forma similar, `src/services/inventory_service.py` permite buscar productos por ID o por coincidencia parcial de nombre. Esto es importante para preguntas como disponibilidad, stock, categoría, lote, fecha de fabricación o fecha de expiración.
 
-3. **No conversation memory**: Each query is handled independently. The LLM
-   does not have access to previous messages in the conversation. Adding
-   LangChain `ConversationBufferMemory` would be the next logical upgrade.
-
-4. **Static inventory**: The inventory DataFrame is loaded and cached at startup.
-   If the Excel file is updated while the app is running, the cache must be cleared.
-
-5. **PDF text extraction quality**: `pypdf` may produce imperfect text from
-   scanned PDFs or PDFs with complex layouts. If extraction quality is poor,
-   upgrading to `pymupdf` (fitz) is recommended.
-
-6. **FAISS does not support real-time updates**: Adding new documents requires
-   rebuilding the entire index (`force_rebuild=True`).
-
-### Assumptions
-
-- All data files are stored in the `data/` directory.
-- Ollama is running locally at `http://127.0.0.1:11434`.
-- The `gemma2:2b` model has been pulled with `ollama pull gemma2:2b`.
-- The first app run will take 1–3 minutes to build and save the vectorstore.
-- Subsequent runs load the saved index in under 5 seconds.
+Esta decisión es una de las más importantes del proyecto: el RAG no reemplaza las fuentes estructuradas. Las complementa. La información operativa exacta se consulta de manera determinística, mientras que RAG aporta contexto adicional, políticas relacionadas o explicaciones en lenguaje natural.
 
 ---
 
-## 5. Request Flow Example
+## 9. Construcción de prompts y generación con el LLM
 
-**User query:** "Where is my order ECO20105?"
+Los prompts se construyen en `src/llm/prompts.py`. Existe un constructor de prompt para cada intención del sistema:
 
-1. `detect_intent("where is my order eco20105")` → `"order_status"`
-2. `extract_tracking_number(...)` → `"ECO20105"`
-3. `get_order("ECO20105")` → order dict (status, items, shipping method, etc.)
-4. `retrieve_context_text("where is my order ECO20105", vectorstore, k=3)` → shipping policy chunks
-5. `build_order_prompt(order, user_input, rag_context)` → full prompt
-6. `generate_llm_response(prompt)` → LLM natural-language answer
-7. `format_order_response(llm_answer, tracking, order)` → answer + Markdown order card
-8. Streamlit displays the response; sidebar shows intent and retrieved sources
+| Constructor | Intención |
+|---|---|
+| `build_order_prompt()` | Estado de pedido |
+| `build_return_prompt()` | Política de devolución |
+| `build_shipping_prompt()` | Envíos |
+| `build_inventory_prompt()` | Inventario |
+| `build_product_prompt()` | Producto |
+| `build_human_prompt()` | Escalamiento humano |
+| `build_general_prompt()` | Consulta general |
+
+Cada prompt combina instrucciones de comportamiento, contexto recuperado, datos estructurados cuando aplican, ejemplos few-shot y la pregunta del usuario. Las instrucciones incluyen reglas explícitas para evitar que el modelo invente información.
+
+La generación se realiza en `src/llm/llm_client.py`, usando Gemma 2B a través de Ollama. El modelo se ejecuta localmente con temperatura `0`, buscando respuestas más determinísticas y menos creativas. Esta configuración es adecuada para soporte al cliente, donde la prioridad no es la originalidad sino la consistencia, precisión y claridad.
+
+El sistema también maneja errores comunes: modelo no descargado, servidor de Ollama apagado o fallos inesperados. Esto mejora la experiencia de ejecución del MVP y facilita su revisión por parte de terceros.
+
+---
+
+## 10. Interfaz en Streamlit
+
+La interfaz se implementa en `app.py` y componentes auxiliares dentro de `src/ui_blocks/`. Streamlit permite construir una demo funcional de forma rápida, manteniendo una experiencia similar a un chat de atención al cliente.
+
+La aplicación cumple varias funciones:
+
+1. Recibe el mensaje del usuario.
+2. Mantiene historial de conversación en `st.session_state`.
+3. Ejecuta el flujo de detección de intención.
+4. Llama al pipeline de recuperación y generación.
+5. Muestra la respuesta generada.
+6. Presenta información adicional como intención detectada, estado del RAG y fuentes recuperadas.
+
+El índice FAISS se carga usando caché de recursos, de modo que no se reconstruye en cada interacción. Esto mejora el rendimiento de la aplicación y hace viable la ejecución local.
+
+Aunque Streamlit no representa una arquitectura productiva final para atención omnicanal, sí es adecuado para el propósito académico: demostrar de forma visual e interactiva que la solución RAG funciona de extremo a extremo.
+
+---
+
+## 11. Ejemplo de flujo end-to-end
+
+Supongamos que el usuario escribe:
+
+```text
+Where is my order ECO20105?
+```
+
+El flujo interno sería:
+
+1. `detect_intent()` clasifica la consulta como `order_status`.
+2. `extract_tracking_number()` identifica el código `ECO20105`.
+3. `get_order()` consulta el archivo de pedidos y recupera la información estructurada.
+4. `retrieve_context_text()` recupera contexto adicional desde FAISS, por ejemplo fragmentos sobre políticas de envío.
+5. `build_order_prompt()` construye el prompt con instrucciones, datos del pedido y contexto recuperado.
+6. `generate_llm_response()` envía el prompt a Gemma 2B mediante Ollama.
+7. El sistema formatea la respuesta y la muestra en Streamlit.
+8. La interfaz presenta también la intención detectada y las fuentes recuperadas.
+
+Este flujo demuestra la idea central del sistema: el modelo no responde desde memoria ni inventa el estado del pedido. La respuesta se apoya en una consulta estructurada y se complementa con recuperación documental.
+
+---
+
+## 12. Limitaciones, supuestos y conclusión
+
+La solución implementada es funcional para el alcance académico, pero tiene limitaciones claras.
+
+Primero, el router basado en palabras clave puede fallar ante consultas ambiguas. Segundo, Gemma 2B es un modelo pequeño y puede producir respuestas limitadas si el contexto recuperado no es suficiente. Tercero, la base de conocimiento es estática: si los documentos cambian, es necesario reconstruir el índice. Cuarto, la memoria conversacional es limitada, por lo que cada consulta se procesa principalmente como una interacción independiente. Finalmente, FAISS no está diseñado como una base vectorial gestionada para actualizaciones en tiempo real o múltiples usuarios concurrentes.
+
+Los principales supuestos del MVP son:
+
+- Los archivos de datos están disponibles en la carpeta `data/`.
+- Ollama se ejecuta localmente.
+- El modelo `gemma2:2b` está descargado.
+- El índice FAISS puede construirse localmente en la primera ejecución.
+- Los documentos del taller son representativos de la base de conocimiento de EcoMarket.
+
+A pesar de estas limitaciones, la implementación cumple el objetivo central del Taller 2: integrar un sistema RAG funcional en la solución del Taller 1. El repositorio demuestra cómo cargar documentos, dividirlos en chunks, generar embeddings, construir una base vectorial, recuperar contexto relevante, combinarlo con datos estructurados y producir respuestas mediante un LLM local.
+
+En síntesis, esta fase muestra que la arquitectura propuesta no se queda en un diseño conceptual. El sistema implementado permite ejecutar un flujo completo de atención al cliente basado en recuperación aumentada, manteniendo una separación clara entre datos, conocimiento documental, lógica de enrutamiento, prompts y generación de lenguaje natural.
