@@ -77,15 +77,23 @@ ecomarket-rag-assistant/
 ├── pyproject.toml                      # uv dependencies
 ├── src/
 │   ├── __init__.py
-│   ├── router.py                       # Intent detection (7 intents)
-│   ├── order_service.py                # Structured order lookup
-│   ├── inventory_service.py            # Structured inventory lookup
-│   ├── document_loader.py              # PDF, Excel, JSON → LangChain Documents
-│   ├── rag_pipeline.py                 # Build / load FAISS vectorstore
-│   ├── retriever.py                    # Similarity search wrapper
-│   ├── prompts.py                      # Prompt builders (one per intent)
-│   ├── llm_client.py                   # Ollama client wrapper
-│   └── utils.py                        # Tracking extraction, formatters
+│   ├── core/
+│   │   ├── router.py                   # Intent detection (7 intents)
+│   │   └── utils.py                    # Tracking extraction, formatters
+│   ├── llm/
+│   │   ├── llm_client.py               # Ollama client wrapper
+│   │   └── prompts.py                  # Prompt builders (one per intent)
+│   ├── rag/
+│   │   ├── document_loader.py          # PDF, Excel, JSON → LangChain Documents
+│   │   ├── rag_pipeline.py             # Build / load FAISS vectorstore
+│   │   └── retriever.py                # Similarity search wrapper
+│   ├── services/
+│   │   ├── inventory_service.py        # Structured inventory lookup
+│   │   ├── order_service.py            # Structured order lookup
+│   │   └── returns_service.py          # Return policy loader
+│   └── ui_blocks/
+│       ├── chat_handler.py             # Intent router + response orchestrator
+│       └── sidebar.py                  # Streamlit sidebar rendering
 ├── data/
 │   ├── EcoMarket ReturnPolicy.pdf
 │   ├── EcoMarket ShippingPolicy.pdf

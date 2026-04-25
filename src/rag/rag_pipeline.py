@@ -17,7 +17,7 @@ from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_core.documents import Document
 
-from src.document_loader import load_all_documents
+from src.rag.document_loader import load_all_documents
 
 # ── configuration ────────────────────────────────────────────────────────────
 

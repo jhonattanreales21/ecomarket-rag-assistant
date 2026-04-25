@@ -109,7 +109,7 @@ type provides a direct match.
 
 ## 2. Document Loading Pipeline
 
-All document loading is implemented in `src/document_loader.py`.
+All document loading is implemented in `src/rag/document_loader.py`.
 
 ### PDF loading
 
@@ -187,7 +187,7 @@ Structured rows (inventory, catalog, orders, examples) are all shorter than
 
 ## 4. Indexing Process
 
-The indexing process is managed by `src/rag_pipeline.py`:
+The indexing process is managed by `src/rag/rag_pipeline.py`:
 
 1. **Load documents** — `load_all_documents()` calls all six loaders.
 2. **Chunk** — `RecursiveCharacterTextSplitter` splits long documents.

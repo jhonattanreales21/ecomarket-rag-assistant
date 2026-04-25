@@ -6,7 +6,7 @@ and RAG retrieval to generate grounded responses via Gemma 2B.
 
 import streamlit as st
 
-from src.rag_pipeline import get_vectorstore
+from src.rag.rag_pipeline import get_vectorstore
 from src.ui_blocks.chat_handler import handle_message
 from src.ui_blocks.sidebar import render_sidebar
 

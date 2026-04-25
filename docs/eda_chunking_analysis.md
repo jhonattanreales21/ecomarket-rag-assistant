@@ -3,7 +3,7 @@
 ## Purpose
 
 This document records the chunking parameters used in the EcoMarket RAG pipeline
-(`src/rag_pipeline.py`). All values were derived empirically from the actual knowledge-base
+(`src/rag/rag_pipeline.py`). All values were derived empirically from the actual knowledge-base
 files using `notebooks/eda_chunking_analysis.ipynb`, which is the **source of truth** for
 this analysis.
 

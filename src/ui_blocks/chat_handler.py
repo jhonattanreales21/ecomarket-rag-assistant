@@ -1,10 +1,10 @@
 """Intent routing and response generation for the EcoMarket Support Assistant."""
 
-from src.router import detect_intent
-from src.order_service import get_order
-from src.inventory_service import get_product_by_id, get_products_by_name, format_product_summary
-from src.retriever import retrieve_context_text
-from src.prompts import (
+from src.core.router import detect_intent
+from src.services.order_service import get_order
+from src.services.inventory_service import get_product_by_id, get_products_by_name, format_product_summary
+from src.rag.retriever import retrieve_context_text
+from src.llm.prompts import (
     build_order_prompt,
     build_return_prompt,
     build_shipping_prompt,
@@ -13,8 +13,8 @@ from src.prompts import (
     build_human_prompt,
     build_general_prompt,
 )
-from src.llm_client import generate_llm_response
-from src.utils import extract_tracking_number, extract_product_id, format_order_response
+from src.llm.llm_client import generate_llm_response
+from src.core.utils import extract_tracking_number, extract_product_id, format_order_response
 
 _STOPWORDS = {
     "what", "is", "the", "of", "a", "an", "how", "does", "do", "tell", "me",

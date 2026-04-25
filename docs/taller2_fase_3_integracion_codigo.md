@@ -14,13 +14,13 @@ between components, prompt construction, and how Streamlit ties everything toget
 User input (Streamlit chat)
         │
         ▼
-  detect_intent()  [src/router.py]
+  detect_intent()  [src/core/router.py]
         │
         ├── order_status
-        │       ├── extract_tracking_number()  [src/utils.py]
-        │       ├── get_order()  [src/order_service.py]  ← structured truth
-        │       ├── retrieve_context_text()  [src/retriever.py]  ← RAG enrichment
-        │       └── build_order_prompt()  [src/prompts.py]
+        │       ├── extract_tracking_number()  [src/core/utils.py]
+        │       ├── get_order()  [src/services/order_service.py]  ← structured truth
+        │       ├── retrieve_context_text()  [src/rag/retriever.py]  ← RAG enrichment
+        │       └── build_order_prompt()  [src/llm/prompts.py]
         │
         ├── return_policy
         │       ├── retrieve_context_text(filter="returns_policy")
@@ -31,8 +31,8 @@ User input (Streamlit chat)
         │       └── build_shipping_prompt()
         │
         ├── inventory
-        │       ├── extract_product_id()  [src/utils.py]
-        │       ├── get_product_by_id() / get_products_by_name()  [src/inventory_service.py]
+        │       ├── extract_product_id()  [src/core/utils.py]
+        │       ├── get_product_by_id() / get_products_by_name()  [src/services/inventory_service.py]
         │       ├── retrieve_context_text()  ← RAG enrichment
         │       └── build_inventory_prompt()
         │
@@ -48,7 +48,7 @@ User input (Streamlit chat)
                 └── build_general_prompt()
                         │
                         ▼
-              generate_llm_response()  [src/llm_client.py]
+              generate_llm_response()  [src/llm/llm_client.py]
                         │
                         ▼
               Formatted response displayed in Streamlit
@@ -58,7 +58,7 @@ User input (Streamlit chat)
 
 ## 2. Module-by-Module Explanation
 
-### 2.1 `src/router.py` — Intent Classification
+### 2.1 `src/core/router.py` — Intent Classification
 
 ```python
 def detect_intent(text: str) -> str
@@ -76,7 +76,7 @@ could use a fine-tuned classifier or a fast embedding-based classifier.
 
 ---
 
-### 2.2 `src/document_loader.py` — Knowledge Base Loading
+### 2.2 `src/rag/document_loader.py` — Knowledge Base Loading
 
 Six loader functions convert raw files into LangChain `Document` objects:
 
@@ -97,7 +97,7 @@ Each Document has:
 
 ---
 
-### 2.3 `src/rag_pipeline.py` — Vectorstore Build and Load
+### 2.3 `src/rag/rag_pipeline.py` — Vectorstore Build and Load
 
 ```python
 def get_vectorstore(force_rebuild: bool = False) -> FAISS
@@ -120,7 +120,7 @@ so it is built at most once per server restart.
 
 ---
 
-### 2.4 `src/retriever.py` — Similarity Search
+### 2.4 `src/rag/retriever.py` — Similarity Search
 
 ```python
 def retrieve_context_text(
@@ -144,7 +144,7 @@ knowledge base.
 
 ---
 
-### 2.5 `src/order_service.py` — Structured Order Lookup
+### 2.5 `src/services/order_service.py` — Structured Order Lookup
 
 ```python
 def get_order(tracking_number: str) -> dict | None
@@ -159,7 +159,7 @@ into the prompt as authoritative data.
 
 ---
 
-### 2.6 `src/inventory_service.py` — Structured Inventory Lookup
+### 2.6 `src/services/inventory_service.py` — Structured Inventory Lookup
 
 ```python
 def get_product_by_id(product_id: str) -> dict | None
@@ -176,7 +176,7 @@ Markdown table of key product facts that is appended to the LLM's response.
 
 ---
 
-### 2.7 `src/prompts.py` — Prompt Construction
+### 2.7 `src/llm/prompts.py` — Prompt Construction
 
 Seven dedicated builders, one per intent:
 
@@ -206,7 +206,7 @@ The grounding rule is the most important safety mechanism:
 
 ---
 
-### 2.8 `src/llm_client.py` — LLM Generation
+### 2.8 `src/llm/llm_client.py` — LLM Generation
 
 ```python
 def generate_llm_response(prompt: str, max_tokens: int = 350) -> str
@@ -222,7 +222,7 @@ Sends the completed prompt to Gemma 2B via the Ollama Python client.
 
 ---
 
-### 2.9 `src/utils.py` — Shared Utilities
+### 2.9 `src/core/utils.py` — Shared Utilities
 
 ```python
 def extract_tracking_number(text: str) -> str | None  # regex: ECO + digits
