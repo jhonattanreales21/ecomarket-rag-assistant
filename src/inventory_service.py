@@ -97,11 +97,11 @@ def format_product_summary(product: dict) -> str:
         "category": "Category",
         "batch": "Batch",
         "perishable": "Perishable",
-        "manufacturing_date": "Manufacturing Date",
+        "manufacture_date": "Manufacturing Date",
         "expiration_date": "Expiration Date",
-        "shelf_life": "Shelf Life",
-        "stock": "Stock",
-        "warehouse": "Warehouse",
+        "shelf_life_days": "Shelf Life",
+        "stock_quantity": "Stock",
+        "warehouse_location": "Warehouse",
     }
     for key, label in label_map.items():
         value = product.get(key, product.get(label.lower().replace(" ", "_"), "N/A"))

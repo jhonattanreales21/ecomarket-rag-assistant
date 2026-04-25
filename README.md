@@ -219,7 +219,7 @@ Open **http://localhost:8501** in your browser.
 | `What is the expiration date of product P0003?` | `inventory` |
 | `Tell me about the Natural Bamboo Toothbrush` | `product` |
 | `What sustainable cleaning products do you have?` | `product` |
-| `What should I do if my package arrived damaged?` | `return_policy` |
+| `What should I do if my product arrived damaged?` | `return_policy` |
 | `I am very upset and want to complain` | `human` (escalation) |
 
 ---
