@@ -1,9 +1,10 @@
 # EcoMarket RAG Assistant
 
-![Status](https://img.shields.io/badge/status-proposal-yellow)
+![Status](https://img.shields.io/badge/status-wip-yellow)
 ![Domain](https://img.shields.io/badge/domain-e--commerce-blue)
 ![Model](https://img.shields.io/badge/model-Gemma%202B-orange)
 ![Interface](https://img.shields.io/badge/interface-Streamlit-red)
+![RAG](https://img.shields.io/badge/RAG-FAISS%20%2B%20LangChain-purple)
 
 **Authors**
 
@@ -16,9 +17,13 @@
 
 ## Overview
 
-EcoMarket RAG Assistant is a hybrid intent-based customer support chatbot built for EcoMarket, a fictional sustainable products e-commerce company. The system automates responses to the most frequent support queries — order tracking, return policies, and general questions — while routing complaints and sensitive cases to a human agent.
+EcoMarket RAG Assistant is a hybrid customer support chatbot for EcoMarket, a sustainable
+products e-commerce company. The system combines **intent-based routing**, **structured data
+lookup**, and a **full RAG pipeline** to generate factually grounded responses via Gemma 2B.
 
-The architecture deliberately separates **structured data retrieval** from **language generation** to prevent the LLM from hallucinating business-critical information such as order statuses or return rules.
+The architecture deliberately separates **structured data retrieval** (orders, inventory)
+from **language generation** to prevent the LLM from hallucinating business-critical
+information such as order statuses, return rules, or product expiration dates.
 
 ---
 
@@ -26,21 +31,25 @@ The architecture deliberately separates **structured data retrieval** from **lan
 
 ```
 User message (Streamlit)
-  → Intent detection     — keyword-based router classifies the query
-  → Data retrieval       — order DB or return policy loaded as needed
-  → Prompt construction  — few-shot examples injected alongside the data
+  → Intent detection     — keyword-based router (7 intents)
+  → Structured lookup    — orders (JSON) or inventory (Excel) when applicable
+  → RAG retrieval        — top-4 relevant chunks from FAISS knowledge base
+  → Prompt construction  — retrieved context + structured data + few-shot examples
   → LLM generation       — Gemma 2B via Ollama (temperature = 0)
-  → Response displayed   — structured card + natural language reply
+  → Response displayed   — natural language answer + structured data card
 ```
 
-**Four supported intents:**
+**Seven supported intents:**
 
 | Intent | Trigger keywords | What the bot does |
 |---|---|---|
-| `order_status` | "order", "tracking", "pedido" | Looks up the order and reports its status |
-| `return_policy` | "return", "refund", "devol" | Answers based on the return policy document |
-| `human` | "complaint", "queja" | Acknowledges frustration and escalates to a human agent |
-| `general` | anything else | Responds helpfully within the EcoMarket context |
+| `order_status` | "order", "tracking", "ECO…" | Structured order lookup + shipping context |
+| `return_policy` | "return", "refund", "exchange" | RAG over returns policy PDF |
+| `shipping` | "shipping", "delivery", "international" | RAG over shipping policy PDF |
+| `inventory` | "stock", "available", "perishable", "expire", "P00…" | Structured inventory lookup + RAG |
+| `product` | "product", "organic", "bamboo", "catalog" | RAG over product catalog |
+| `human` | "complaint", "upset", "angry", "escalate" | Escalation — no data lookup |
+| `general` | anything else | RAG over full knowledge base |
 
 ---
 
@@ -50,8 +59,12 @@ User message (Streamlit)
 |---|---|
 | UI | Streamlit |
 | LLM | Gemma 2B (via Ollama) |
-| Prompt strategy | Few-shot prompting |
-| Data layer | JSON (orders) + Markdown (policy) |
+| RAG orchestration | LangChain |
+| Embeddings | HuggingFace `all-MiniLM-L6-v2` |
+| Vector store | FAISS (local, persistent) |
+| Chunking | `RecursiveCharacterTextSplitter` (700 chars / 100 overlap) |
+| Structured data | pandas + openpyxl (inventory), JSON (orders) |
+| PDF loading | pypdf |
 | Package manager | uv |
 
 ---
@@ -60,26 +73,40 @@ User message (Streamlit)
 
 ```
 ecomarket-rag-assistant/
-├── app.py                    # Streamlit entry point
+├── app.py                              # Streamlit entry point
+├── pyproject.toml                      # uv dependencies
 ├── src/
-│   ├── router.py             # Intent detection
-│   ├── order_service.py      # Order lookup logic
-│   ├── returns_service.py    # Return policy loader
-│   ├── prompts.py            # Prompt builders (one per intent)
-│   ├── llm_client.py         # Ollama client wrapper
-│   └── utils_format.py       # Response formatting helpers
+│   ├── __init__.py
+│   ├── router.py                       # Intent detection (7 intents)
+│   ├── order_service.py                # Structured order lookup
+│   ├── inventory_service.py            # Structured inventory lookup
+│   ├── document_loader.py              # PDF, Excel, JSON → LangChain Documents
+│   ├── rag_pipeline.py                 # Build / load FAISS vectorstore
+│   ├── retriever.py                    # Similarity search wrapper
+│   ├── prompts.py                      # Prompt builders (one per intent)
+│   ├── llm_client.py                   # Ollama client wrapper
+│   └── utils.py                        # Tracking extraction, formatters
 ├── data/
-│   ├── orders.json           # 10 mock orders (ECO1001–ECO1010)
-│   ├── returns_policy.md     # Return rules injected into prompts
-│   └── support_examples.json # Few-shot examples for all intents
-└── docs/                     # Academic documentation (in Spanish)
+│   ├── EcoMarket ReturnPolicy.pdf
+│   ├── EcoMarket ShippingPolicy.pdf
+│   ├── inventory_200_products_named.xlsx
+│   ├── product_catalog.xlsx
+│   ├── orders_enhanced.json            # 30 realistic orders
+│   └── support_examples_enhanced.json  # Few-shot examples
+├── vectorstore/
+│   └── faiss_index/                    # Auto-generated on first run
+└── docs/
+    ├── fase_1_rag_componentes.md       # Embedding model and vector store decisions
+    ├── fase_2_base_conocimiento.md     # Knowledge base, chunking, indexing
+    ├── fase_3_integracion_codigo.md    # End-to-end code walkthrough
+    └── eda_chunking_analysis.md        # Chunking EDA and justification
 ```
 
 ---
 
 ## Prerequisites
 
-- Python 3.11+
+- Python 3.10 or 3.11
 - [uv](https://github.com/astral-sh/uv) — fast Python package manager
 - [Ollama](https://ollama.com) — local LLM runtime
 
@@ -87,87 +114,144 @@ ecomarket-rag-assistant/
 
 ## Setup & Run
 
-> **Before you start:** Ollama must be installed on your machine. Download it from [ollama.com](https://ollama.com) and follow the instructions for your OS:
->
-> | OS | Installation |
-> |---|---|
-> | **macOS** | Download the `.dmg` from ollama.com or run `brew install ollama` |
-> | **Windows** | Download the `.exe` installer from ollama.com or run `winget install Ollama.Ollama` |
-> | **Linux** | `curl -fsSL https://ollama.com/install.sh \| sh` |
->
-> Verify the installation with `ollama --version` before proceeding.
+### 1. Install uv (if not already installed)
 
-### 1. Clone the repository
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+Or on macOS with Homebrew:
+
+```bash
+brew install uv
+```
+
+### 2. Install Ollama
+
+Download from [ollama.com](https://ollama.com) or:
+
+| OS | Command |
+|---|---|
+| macOS | `brew install ollama` |
+| Linux | `curl -fsSL https://ollama.com/install.sh \| sh` |
+| Windows | Download the `.exe` from ollama.com |
+
+Verify: `ollama --version`
+
+### 3. Clone the repository
 
 ```bash
 git clone <repository-url>
 cd ecomarket-rag-assistant
 ```
 
-### 2. Install dependencies
+### 4. Install dependencies
 
 ```bash
 uv sync
 ```
 
-### 3. Download the model
+This installs all packages including LangChain, FAISS, sentence-transformers,
+pandas, pypdf, and Streamlit.
+
+> **Note:** The first `uv sync` will download PyTorch and sentence-transformers
+> (~1.5 GB). This only happens once.
+
+### 5. Add data files
+
+Place the following files in the `data/` directory:
+
+```
+data/
+├── EcoMarket ReturnPolicy.pdf
+├── EcoMarket ShippingPolicy.pdf
+├── inventory_200_products_named.xlsx   
+├── product_catalog.xlsx                
+├── orders_enhanced.json                
+└── support_examples_enhanced.json      
+```
+
+### 6. Pull the Gemma 2B model
 
 ```bash
 ollama pull gemma2:2b
 ```
 
-### 4. Start the Ollama server
+### 7. Start the Ollama server
 
-Open a terminal and keep it running in the background:
+Open a terminal and keep it running:
 
 ```bash
 ollama serve
 ```
 
-> If you see `address already in use`, the server is already running — you can skip this step.
+> If you see `address already in use`, Ollama is already running — skip this step.
 
-### 5. Launch the app
+### 8. Launch the app
 
-Open a second terminal and run:
+In a second terminal:
 
 ```bash
 uv run streamlit run app.py
 ```
 
-The chat interface will be available at **http://localhost:8501**
+Open **http://localhost:8501** in your browser.
+
+> **First run:** The app will build the FAISS vectorstore (embedding ~600 chunks).
+> This takes 1–3 minutes and only happens once. Subsequent starts load from disk in < 5 seconds.
 
 ---
 
-## Interacting with the Bot
+## Example Questions
 
-Once the app is running, type your message in the chat input at the bottom. Some examples to try:
-
-| Example message | Intent triggered |
+| Question | Intent triggered |
 |---|---|
-| `"Where is my order ECO1005?"` | `order_status` |
-| `"I want to return a product I bought last week"` | `return_policy` |
-| `"I want to return an opened hygiene product"` | `return_policy` |
-| `"I am very frustrated, nobody has helped me"` | `human` (escalation) |
-| `"What kind of products does EcoMarket sell?"` | `general` |
+| `Where is my order ECO20105?` | `order_status` |
+| `Why is my order delayed?` | `order_status` |
+| `Does my order contain perishable products?` | `order_status` |
+| `Can I return an opened hygiene product?` | `return_policy` |
+| `What is the return window for electronics?` | `return_policy` |
+| `What is the shipping policy for delayed orders?` | `shipping` |
+| `Do you ship internationally?` | `shipping` |
+| `How long does standard shipping take?` | `shipping` |
+| `Is product P0001 available in stock?` | `inventory` |
+| `Is Organic Whole Milk perishable?` | `inventory` |
+| `What is the expiration date of product P0003?` | `inventory` |
+| `Tell me about the Natural Bamboo Toothbrush` | `product` |
+| `What sustainable cleaning products do you have?` | `product` |
+| `What should I do if my package arrived damaged?` | `return_policy` |
+| `I am very upset and want to complain` | `human` (escalation) |
 
-The sidebar shows which intent was detected for each message, which is useful for understanding how the routing logic works.
+---
+
+## Rebuilding the Vectorstore
+
+If you update any data files, rebuild the FAISS index:
+
+```python
+# In a Python shell or script
+from src.rag_pipeline import get_vectorstore
+get_vectorstore(force_rebuild=True)
+```
+
+Or simply delete the `vectorstore/` directory and restart the app.
 
 ---
 
 ## Documentation
 
-Design decisions, risk analysis, ethical considerations, and prompt engineering results are documented in the [`docs/`](docs/) folder.
-
-> **Note:** All documents are written in Spanish as part of an academic deliverable.
-
 | File | Content |
 |---|---|
-| [`taller_1_fase_1_modelo_y_arquitectura.md`](docs/taller_1_fase_1_modelo_y_arquitectura.md) | Model selection rationale and system architecture |
-| [`taller_1_fase_2_riesgos_y_etica.md`](docs/taller_1_fase_2_riesgos_y_etica.md) | Risks, ethics, and limitations |
-| [`taller_1_fase_3_Ingenieria_de_prompts_&_evaluacion.md`](docs/taller_1_fase_3_Ingenieria_de_prompts_&_evaluacion.md) | Prompt engineering approach and evaluation results |
+| [docs/taller2_fase_1_rag_componentes.md](docs/taller2_fase_1_rag_componentes.md) | Embedding model and vector store selection rationale |
+| [docs/taller2_fase_2_base_conocimiento.md](docs/taller2_fase_2_base_conocimiento.md) | Knowledge base, chunking strategy, indexing process |
+| [docs/taller2_fase_3_integracion_codigo.md](docs/taller2_fase_3_integracion_codigo.md) | End-to-end code walkthrough, limitations, example flow |
+| [docs/eda_chunking_analysis.md](docs/eda_chunking_analysis.md) | EDA-based chunking justification |
 
 ---
 
 ## Acknowledgments
 
-This project was developed as part of the Master's program in Applied Artificial Intelligence at ICESI University. Special thanks to our tutors and peers for their guidance and feedback.
+This project was developed as part of the Master's program in Applied Artificial
+Intelligence at ICESI University. Special thanks to our tutors and peers for
+their guidance and feedback.
+
