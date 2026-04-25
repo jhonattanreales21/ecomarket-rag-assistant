@@ -1,0 +1,794 @@
+[
+  {
+    "tracking_number": "ECO20100",
+    "status": "Delayed",
+    "estimated_delivery": "2026-04-13",
+    "shipping_method": "Express",
+    "shipping_region": "Europe",
+    "order_date": "2026-04-07",
+    "items": [
+      {
+        "product_id": "P0006",
+        "product_name": "Natural Bamboo Toothbrush",
+        "category": "Personal Care",
+        "quantity": 3,
+        "perishable": false
+      },
+      {
+        "product_id": "P0001",
+        "product_name": "Organic Whole Milk",
+        "category": "Dairy",
+        "quantity": 1,
+        "perishable": true
+      },
+      {
+        "product_id": "P0003",
+        "product_name": "Grass-Fed Ground Beef",
+        "category": "Meat",
+        "quantity": 2,
+        "perishable": true
+      }
+    ],
+    "delay_reason": "High demand and logistics delay"
+  },
+  {
+    "tracking_number": "ECO20101",
+    "status": "In transit",
+    "estimated_delivery": "2026-04-05",
+    "shipping_method": "Standard",
+    "shipping_region": "Canada",
+    "order_date": "2026-04-02",
+    "items": [
+      {
+        "product_id": "P0001",
+        "product_name": "Organic Whole Milk",
+        "category": "Dairy",
+        "quantity": 2,
+        "perishable": true
+      },
+      {
+        "product_id": "P0007",
+        "product_name": "Plant-Based Dish Soap",
+        "category": "Cleaning",
+        "quantity": 2,
+        "perishable": false
+      },
+      {
+        "product_id": "P0009",
+        "product_name": "Whole Grain Bread",
+        "category": "Bakery",
+        "quantity": 1,
+        "perishable": true
+      }
+    ],
+    "delay_reason": null
+  },
+  {
+    "tracking_number": "ECO20102",
+    "status": "Processing",
+    "estimated_delivery": "2026-04-15",
+    "shipping_method": "Express",
+    "shipping_region": "US-East",
+    "order_date": "2026-04-08",
+    "items": [
+      {
+        "product_id": "P0005",
+        "product_name": "Sea Salt Veggie Chips",
+        "category": "Snacks",
+        "quantity": 1,
+        "perishable": false
+      },
+      {
+        "product_id": "P0009",
+        "product_name": "Whole Grain Bread",
+        "category": "Bakery",
+        "quantity": 1,
+        "perishable": true
+      },
+      {
+        "product_id": "P0006",
+        "product_name": "Natural Bamboo Toothbrush",
+        "category": "Personal Care",
+        "quantity": 3,
+        "perishable": false
+      }
+    ],
+    "delay_reason": null
+  },
+  {
+    "tracking_number": "ECO20103",
+    "status": "Delayed",
+    "estimated_delivery": "2026-04-12",
+    "shipping_method": "Same-Day",
+    "shipping_region": "Canada",
+    "order_date": "2026-04-09",
+    "items": [
+      {
+        "product_id": "P0008",
+        "product_name": "Frozen Mixed Berries",
+        "category": "Frozen",
+        "quantity": 2,
+        "perishable": true
+      },
+      {
+        "product_id": "P0003",
+        "product_name": "Grass-Fed Ground Beef",
+        "category": "Meat",
+        "quantity": 2,
+        "perishable": true
+      },
+      {
+        "product_id": "P0009",
+        "product_name": "Whole Grain Bread",
+        "category": "Bakery",
+        "quantity": 3,
+        "perishable": true
+      }
+    ],
+    "delay_reason": "High demand and logistics delay"
+  },
+  {
+    "tracking_number": "ECO20104",
+    "status": "Delayed",
+    "estimated_delivery": "2026-04-07",
+    "shipping_method": "Same-Day",
+    "shipping_region": "Canada",
+    "order_date": "2026-04-01",
+    "items": [
+      {
+        "product_id": "P0005",
+        "product_name": "Sea Salt Veggie Chips",
+        "category": "Snacks",
+        "quantity": 3,
+        "perishable": false
+      },
+      {
+        "product_id": "P0004",
+        "product_name": "Sparkling Mineral Water",
+        "category": "Beverages",
+        "quantity": 3,
+        "perishable": false
+      }
+    ],
+    "delay_reason": "High demand and logistics delay"
+  },
+  {
+    "tracking_number": "ECO20105",
+    "status": "Delayed",
+    "estimated_delivery": "2026-04-03",
+    "shipping_method": "Standard",
+    "shipping_region": "Europe",
+    "order_date": "2026-04-01",
+    "items": [
+      {
+        "product_id": "P0005",
+        "product_name": "Sea Salt Veggie Chips",
+        "category": "Snacks",
+        "quantity": 3,
+        "perishable": false
+      },
+      {
+        "product_id": "P0006",
+        "product_name": "Natural Bamboo Toothbrush",
+        "category": "Personal Care",
+        "quantity": 1,
+        "perishable": false
+      }
+    ],
+    "delay_reason": null
+  },
+  {
+    "tracking_number": "ECO20106",
+    "status": "Delivered",
+    "estimated_delivery": "2026-04-11",
+    "shipping_method": "Express",
+    "shipping_region": "US-West",
+    "order_date": "2026-04-08",
+    "items": [
+      {
+        "product_id": "P0004",
+        "product_name": "Sparkling Mineral Water",
+        "category": "Beverages",
+        "quantity": 2,
+        "perishable": false
+      },
+      {
+        "product_id": "P0007",
+        "product_name": "Plant-Based Dish Soap",
+        "category": "Cleaning",
+        "quantity": 2,
+        "perishable": false
+      }
+    ],
+    "delay_reason": null
+  },
+  {
+    "tracking_number": "ECO20107",
+    "status": "Processing",
+    "estimated_delivery": "2026-04-14",
+    "shipping_method": "Express",
+    "shipping_region": "Canada",
+    "order_date": "2026-04-11",
+    "items": [
+      {
+        "product_id": "P0002",
+        "product_name": "Fresh Baby Spinach",
+        "category": "Produce",
+        "quantity": 2,
+        "perishable": true
+      },
+      {
+        "product_id": "P0004",
+        "product_name": "Sparkling Mineral Water",
+        "category": "Beverages",
+        "quantity": 1,
+        "perishable": false
+      },
+      {
+        "product_id": "P0008",
+        "product_name": "Frozen Mixed Berries",
+        "category": "Frozen",
+        "quantity": 1,
+        "perishable": true
+      }
+    ],
+    "delay_reason": null
+  },
+  {
+    "tracking_number": "ECO20108",
+    "status": "Delayed",
+    "estimated_delivery": "2026-04-16",
+    "shipping_method": "Standard",
+    "shipping_region": "US-West",
+    "order_date": "2026-04-09",
+    "items": [
+      {
+        "product_id": "P0005",
+        "product_name": "Sea Salt Veggie Chips",
+        "category": "Snacks",
+        "quantity": 3,
+        "perishable": false
+      },
+      {
+        "product_id": "P0002",
+        "product_name": "Fresh Baby Spinach",
+        "category": "Produce",
+        "quantity": 2,
+        "perishable": true
+      }
+    ],
+    "delay_reason": null
+  },
+  {
+    "tracking_number": "ECO20109",
+    "status": "Delivered",
+    "estimated_delivery": "2026-04-14",
+    "shipping_method": "Express",
+    "shipping_region": "US-West",
+    "order_date": "2026-04-09",
+    "items": [
+      {
+        "product_id": "P0006",
+        "product_name": "Natural Bamboo Toothbrush",
+        "category": "Personal Care",
+        "quantity": 2,
+        "perishable": false
+      },
+      {
+        "product_id": "P0001",
+        "product_name": "Organic Whole Milk",
+        "category": "Dairy",
+        "quantity": 3,
+        "perishable": true
+      }
+    ],
+    "delay_reason": null
+  },
+  {
+    "tracking_number": "ECO20110",
+    "status": "Delayed",
+    "estimated_delivery": "2026-04-14",
+    "shipping_method": "Standard",
+    "shipping_region": "Canada",
+    "order_date": "2026-04-10",
+    "items": [
+      {
+        "product_id": "P0002",
+        "product_name": "Fresh Baby Spinach",
+        "category": "Produce",
+        "quantity": 2,
+        "perishable": true
+      },
+      {
+        "product_id": "P0007",
+        "product_name": "Plant-Based Dish Soap",
+        "category": "Cleaning",
+        "quantity": 1,
+        "perishable": false
+      }
+    ],
+    "delay_reason": null
+  },
+  {
+    "tracking_number": "ECO20111",
+    "status": "Delayed",
+    "estimated_delivery": "2026-04-13",
+    "shipping_method": "Standard",
+    "shipping_region": "US-East",
+    "order_date": "2026-04-06",
+    "items": [
+      {
+        "product_id": "P0008",
+        "product_name": "Frozen Mixed Berries",
+        "category": "Frozen",
+        "quantity": 2,
+        "perishable": true
+      },
+      {
+        "product_id": "P0004",
+        "product_name": "Sparkling Mineral Water",
+        "category": "Beverages",
+        "quantity": 3,
+        "perishable": false
+      },
+      {
+        "product_id": "P0006",
+        "product_name": "Natural Bamboo Toothbrush",
+        "category": "Personal Care",
+        "quantity": 3,
+        "perishable": false
+      }
+    ],
+    "delay_reason": null
+  },
+  {
+    "tracking_number": "ECO20112",
+    "status": "Delivered",
+    "estimated_delivery": "2026-04-12",
+    "shipping_method": "Express",
+    "shipping_region": "US-East",
+    "order_date": "2026-04-10",
+    "items": [
+      {
+        "product_id": "P0008",
+        "product_name": "Frozen Mixed Berries",
+        "category": "Frozen",
+        "quantity": 1,
+        "perishable": true
+      }
+    ],
+    "delay_reason": null
+  },
+  {
+    "tracking_number": "ECO20113",
+    "status": "Delivered",
+    "estimated_delivery": "2026-04-08",
+    "shipping_method": "Express",
+    "shipping_region": "US-East",
+    "order_date": "2026-04-02",
+    "items": [
+      {
+        "product_id": "P0003",
+        "product_name": "Grass-Fed Ground Beef",
+        "category": "Meat",
+        "quantity": 3,
+        "perishable": true
+      },
+      {
+        "product_id": "P0009",
+        "product_name": "Whole Grain Bread",
+        "category": "Bakery",
+        "quantity": 2,
+        "perishable": true
+      }
+    ],
+    "delay_reason": null
+  },
+  {
+    "tracking_number": "ECO20114",
+    "status": "In transit",
+    "estimated_delivery": "2026-04-06",
+    "shipping_method": "Same-Day",
+    "shipping_region": "US-East",
+    "order_date": "2026-04-04",
+    "items": [
+      {
+        "product_id": "P0001",
+        "product_name": "Organic Whole Milk",
+        "category": "Dairy",
+        "quantity": 3,
+        "perishable": true
+      },
+      {
+        "product_id": "P0007",
+        "product_name": "Plant-Based Dish Soap",
+        "category": "Cleaning",
+        "quantity": 2,
+        "perishable": false
+      },
+      {
+        "product_id": "P0005",
+        "product_name": "Sea Salt Veggie Chips",
+        "category": "Snacks",
+        "quantity": 1,
+        "perishable": false
+      }
+    ],
+    "delay_reason": "High demand and logistics delay"
+  },
+  {
+    "tracking_number": "ECO20115",
+    "status": "Processing",
+    "estimated_delivery": "2026-04-11",
+    "shipping_method": "Same-Day",
+    "shipping_region": "Canada",
+    "order_date": "2026-04-08",
+    "items": [
+      {
+        "product_id": "P0004",
+        "product_name": "Sparkling Mineral Water",
+        "category": "Beverages",
+        "quantity": 3,
+        "perishable": false
+      },
+      {
+        "product_id": "P0002",
+        "product_name": "Fresh Baby Spinach",
+        "category": "Produce",
+        "quantity": 1,
+        "perishable": true
+      }
+    ],
+    "delay_reason": null
+  },
+  {
+    "tracking_number": "ECO20116",
+    "status": "Delayed",
+    "estimated_delivery": "2026-04-06",
+    "shipping_method": "Express",
+    "shipping_region": "US-East",
+    "order_date": "2026-04-01",
+    "items": [
+      {
+        "product_id": "P0009",
+        "product_name": "Whole Grain Bread",
+        "category": "Bakery",
+        "quantity": 1,
+        "perishable": true
+      }
+    ],
+    "delay_reason": null
+  },
+  {
+    "tracking_number": "ECO20117",
+    "status": "Out for delivery",
+    "estimated_delivery": "2026-04-05",
+    "shipping_method": "Same-Day",
+    "shipping_region": "US-East",
+    "order_date": "2026-04-01",
+    "items": [
+      {
+        "product_id": "P0005",
+        "product_name": "Sea Salt Veggie Chips",
+        "category": "Snacks",
+        "quantity": 1,
+        "perishable": false
+      },
+      {
+        "product_id": "P0004",
+        "product_name": "Sparkling Mineral Water",
+        "category": "Beverages",
+        "quantity": 2,
+        "perishable": false
+      },
+      {
+        "product_id": "P0008",
+        "product_name": "Frozen Mixed Berries",
+        "category": "Frozen",
+        "quantity": 1,
+        "perishable": true
+      }
+    ],
+    "delay_reason": null
+  },
+  {
+    "tracking_number": "ECO20118",
+    "status": "Delayed",
+    "estimated_delivery": "2026-04-10",
+    "shipping_method": "Standard",
+    "shipping_region": "US-West",
+    "order_date": "2026-04-07",
+    "items": [
+      {
+        "product_id": "P0005",
+        "product_name": "Sea Salt Veggie Chips",
+        "category": "Snacks",
+        "quantity": 1,
+        "perishable": false
+      }
+    ],
+    "delay_reason": null
+  },
+  {
+    "tracking_number": "ECO20119",
+    "status": "Delayed",
+    "estimated_delivery": "2026-04-15",
+    "shipping_method": "Standard",
+    "shipping_region": "Europe",
+    "order_date": "2026-04-09",
+    "items": [
+      {
+        "product_id": "P0008",
+        "product_name": "Frozen Mixed Berries",
+        "category": "Frozen",
+        "quantity": 3,
+        "perishable": true
+      }
+    ],
+    "delay_reason": null
+  },
+  {
+    "tracking_number": "ECO20120",
+    "status": "In transit",
+    "estimated_delivery": "2026-04-04",
+    "shipping_method": "Express",
+    "shipping_region": "US-West",
+    "order_date": "2026-04-02",
+    "items": [
+      {
+        "product_id": "P0004",
+        "product_name": "Sparkling Mineral Water",
+        "category": "Beverages",
+        "quantity": 2,
+        "perishable": false
+      },
+      {
+        "product_id": "P0006",
+        "product_name": "Natural Bamboo Toothbrush",
+        "category": "Personal Care",
+        "quantity": 1,
+        "perishable": false
+      }
+    ],
+    "delay_reason": "High demand and logistics delay"
+  },
+  {
+    "tracking_number": "ECO20121",
+    "status": "In transit",
+    "estimated_delivery": "2026-04-07",
+    "shipping_method": "Express",
+    "shipping_region": "US-East",
+    "order_date": "2026-04-05",
+    "items": [
+      {
+        "product_id": "P0010",
+        "product_name": "Organic Brown Rice",
+        "category": "Pantry",
+        "quantity": 2,
+        "perishable": false
+      }
+    ],
+    "delay_reason": null
+  },
+  {
+    "tracking_number": "ECO20122",
+    "status": "Out for delivery",
+    "estimated_delivery": "2026-04-18",
+    "shipping_method": "Express",
+    "shipping_region": "US-East",
+    "order_date": "2026-04-11",
+    "items": [
+      {
+        "product_id": "P0007",
+        "product_name": "Plant-Based Dish Soap",
+        "category": "Cleaning",
+        "quantity": 1,
+        "perishable": false
+      },
+      {
+        "product_id": "P0005",
+        "product_name": "Sea Salt Veggie Chips",
+        "category": "Snacks",
+        "quantity": 1,
+        "perishable": false
+      },
+      {
+        "product_id": "P0009",
+        "product_name": "Whole Grain Bread",
+        "category": "Bakery",
+        "quantity": 1,
+        "perishable": true
+      }
+    ],
+    "delay_reason": null
+  },
+  {
+    "tracking_number": "ECO20123",
+    "status": "Delivered",
+    "estimated_delivery": "2026-04-09",
+    "shipping_method": "Express",
+    "shipping_region": "Europe",
+    "order_date": "2026-04-07",
+    "items": [
+      {
+        "product_id": "P0010",
+        "product_name": "Organic Brown Rice",
+        "category": "Pantry",
+        "quantity": 2,
+        "perishable": false
+      },
+      {
+        "product_id": "P0009",
+        "product_name": "Whole Grain Bread",
+        "category": "Bakery",
+        "quantity": 1,
+        "perishable": true
+      }
+    ],
+    "delay_reason": "High demand and logistics delay"
+  },
+  {
+    "tracking_number": "ECO20124",
+    "status": "Processing",
+    "estimated_delivery": "2026-04-12",
+    "shipping_method": "Same-Day",
+    "shipping_region": "US-East",
+    "order_date": "2026-04-08",
+    "items": [
+      {
+        "product_id": "P0007",
+        "product_name": "Plant-Based Dish Soap",
+        "category": "Cleaning",
+        "quantity": 3,
+        "perishable": false
+      }
+    ],
+    "delay_reason": null
+  },
+  {
+    "tracking_number": "ECO20125",
+    "status": "Delayed",
+    "estimated_delivery": "2026-04-16",
+    "shipping_method": "Same-Day",
+    "shipping_region": "Europe",
+    "order_date": "2026-04-10",
+    "items": [
+      {
+        "product_id": "P0001",
+        "product_name": "Organic Whole Milk",
+        "category": "Dairy",
+        "quantity": 3,
+        "perishable": true
+      }
+    ],
+    "delay_reason": null
+  },
+  {
+    "tracking_number": "ECO20126",
+    "status": "Delayed",
+    "estimated_delivery": "2026-04-12",
+    "shipping_method": "Same-Day",
+    "shipping_region": "US-East",
+    "order_date": "2026-04-09",
+    "items": [
+      {
+        "product_id": "P0009",
+        "product_name": "Whole Grain Bread",
+        "category": "Bakery",
+        "quantity": 2,
+        "perishable": true
+      },
+      {
+        "product_id": "P0008",
+        "product_name": "Frozen Mixed Berries",
+        "category": "Frozen",
+        "quantity": 3,
+        "perishable": true
+      },
+      {
+        "product_id": "P0007",
+        "product_name": "Plant-Based Dish Soap",
+        "category": "Cleaning",
+        "quantity": 2,
+        "perishable": false
+      }
+    ],
+    "delay_reason": null
+  },
+  {
+    "tracking_number": "ECO20127",
+    "status": "In transit",
+    "estimated_delivery": "2026-04-15",
+    "shipping_method": "Express",
+    "shipping_region": "Europe",
+    "order_date": "2026-04-10",
+    "items": [
+      {
+        "product_id": "P0001",
+        "product_name": "Organic Whole Milk",
+        "category": "Dairy",
+        "quantity": 3,
+        "perishable": true
+      },
+      {
+        "product_id": "P0003",
+        "product_name": "Grass-Fed Ground Beef",
+        "category": "Meat",
+        "quantity": 2,
+        "perishable": true
+      },
+      {
+        "product_id": "P0009",
+        "product_name": "Whole Grain Bread",
+        "category": "Bakery",
+        "quantity": 3,
+        "perishable": true
+      }
+    ],
+    "delay_reason": null
+  },
+  {
+    "tracking_number": "ECO20128",
+    "status": "In transit",
+    "estimated_delivery": "2026-04-06",
+    "shipping_method": "Express",
+    "shipping_region": "Canada",
+    "order_date": "2026-04-02",
+    "items": [
+      {
+        "product_id": "P0009",
+        "product_name": "Whole Grain Bread",
+        "category": "Bakery",
+        "quantity": 1,
+        "perishable": true
+      },
+      {
+        "product_id": "P0008",
+        "product_name": "Frozen Mixed Berries",
+        "category": "Frozen",
+        "quantity": 1,
+        "perishable": true
+      },
+      {
+        "product_id": "P0007",
+        "product_name": "Plant-Based Dish Soap",
+        "category": "Cleaning",
+        "quantity": 2,
+        "perishable": false
+      }
+    ],
+    "delay_reason": "High demand and logistics delay"
+  },
+  {
+    "tracking_number": "ECO20129",
+    "status": "Delayed",
+    "estimated_delivery": "2026-04-13",
+    "shipping_method": "Same-Day",
+    "shipping_region": "Europe",
+    "order_date": "2026-04-11",
+    "items": [
+      {
+        "product_id": "P0007",
+        "product_name": "Plant-Based Dish Soap",
+        "category": "Cleaning",
+        "quantity": 2,
+        "perishable": false
+      },
+      {
+        "product_id": "P0001",
+        "product_name": "Organic Whole Milk",
+        "category": "Dairy",
+        "quantity": 2,
+        "perishable": true
+      },
+      {
+        "product_id": "P0006",
+        "product_name": "Natural Bamboo Toothbrush",
+        "category": "Personal Care",
+        "quantity": 1,
+        "perishable": false
+      }
+    ],
+    "delay_reason": "High demand and logistics delay"
+  }
+]
