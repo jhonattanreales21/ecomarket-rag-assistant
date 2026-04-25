@@ -1,7 +1,8 @@
 import json
 from pathlib import Path
 
-ORDERS_PATH = Path("data/orders.json")
+# Use the enhanced orders dataset (30 realistic orders with full metadata)
+ORDERS_PATH = Path("data/orders_enhanced.json")
 
 
 def load_orders():
