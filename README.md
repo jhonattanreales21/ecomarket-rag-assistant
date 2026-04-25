@@ -62,7 +62,7 @@ User message (Streamlit)
 | RAG orchestration | LangChain |
 | Embeddings | HuggingFace `all-MiniLM-L6-v2` |
 | Vector store | FAISS (local, persistent) |
-| Chunking | `RecursiveCharacterTextSplitter` (700 chars / 100 overlap) |
+| Chunking | `RecursiveCharacterTextSplitter` (391 chars / 45 overlap) |
 | Structured data | pandas + openpyxl (inventory), JSON (orders) |
 | PDF loading | pypdf |
 | Package manager | uv |

@@ -1,664 +1,501 @@
 [
   {
-    "id": "example_0",
+    "id": "order_status_001",
     "intent": "order_status",
     "customer_query": "Where is my order ECO20101?",
     "context": {
       "tracking_number": "ECO20101",
       "status": "In transit",
-      "estimated_delivery": "2026-04-05",
+      "estimated_delivery": "2026-04-15",
       "shipping_method": "Standard",
-      "shipping_region": "Canada",
-      "order_date": "2026-04-02",
+      "shipping_region": "US-East",
+      "tracking_url": "https://tracking.ecomarket.com/ECO20101"
+    },
+    "assistant_response": "Your order ECO20101 is currently in transit and is expected to arrive on 2026-04-15. You can track the latest updates here: https://tracking.ecomarket.com/ECO20101."
+  },
+  {
+    "id": "order_status_002",
+    "intent": "order_status",
+    "customer_query": "Why is my order ECO20102 delayed?",
+    "context": {
+      "tracking_number": "ECO20102",
+      "status": "Delayed",
+      "estimated_delivery": "2026-04-20",
+      "delay_reason": "High demand and regional logistics constraints",
+      "shipping_policy_rule": "Delays may occur during high demand periods",
+      "tracking_url": "https://tracking.ecomarket.com/ECO20102"
+    },
+    "assistant_response": "I’m sorry for the delay with your order ECO20102. It has been delayed due to high demand and regional logistics constraints. The updated estimated delivery date is 2026-04-20. You can track it here: https://tracking.ecomarket.com/ECO20102."
+  },
+  {
+    "id": "order_status_003",
+    "intent": "order_status",
+    "customer_query": "Track my shipment ECO20103",
+    "context": {
+      "tracking_number": "ECO20103",
+      "status": "Out for delivery",
+      "estimated_delivery": "2026-04-12",
+      "shipping_method": "Express",
+      "tracking_url": "https://tracking.ecomarket.com/ECO20103"
+    },
+    "assistant_response": "Good news. Your shipment ECO20103 is currently out for delivery and should arrive soon. You can follow it here: https://tracking.ecomarket.com/ECO20103."
+  },
+  {
+    "id": "order_status_004",
+    "intent": "order_status",
+    "customer_query": "Has my package ECO20104 been delivered?",
+    "context": {
+      "tracking_number": "ECO20104",
+      "status": "Delivered",
+      "estimated_delivery": "2026-04-10",
+      "tracking_url": "https://tracking.ecomarket.com/ECO20104"
+    },
+    "assistant_response": "Your package ECO20104 has been marked as delivered. If you have not received it, please contact support so we can investigate the delivery."
+  },
+  {
+    "id": "order_status_005",
+    "intent": "order_status",
+    "customer_query": "What is happening with my order ECO20105?",
+    "context": {
+      "tracking_number": "ECO20105",
+      "status": "Processing",
+      "estimated_delivery": "2026-04-17",
+      "shipping_method": "Standard",
+      "tracking_url": "https://tracking.ecomarket.com/ECO20105"
+    },
+    "assistant_response": "Your order ECO20105 is currently being processed. This means it is being prepared before shipment. The estimated delivery date is 2026-04-17."
+  },
+  {
+    "id": "order_status_006",
+    "intent": "order_status",
+    "customer_query": "Does my order ECO20106 contain perishable products?",
+    "context": {
+      "tracking_number": "ECO20106",
+      "status": "In transit",
       "items": [
         {
           "product_id": "P0001",
           "product_name": "Organic Whole Milk",
           "category": "Dairy",
-          "quantity": 2,
-          "perishable": true
+          "perishable": true,
+          "quantity": 2
         },
         {
-          "product_id": "P0007",
-          "product_name": "Plant-Based Dish Soap",
-          "category": "Cleaning",
-          "quantity": 2,
-          "perishable": false
-        },
-        {
-          "product_id": "P0009",
-          "product_name": "Whole Grain Bread",
-          "category": "Bakery",
-          "quantity": 1,
-          "perishable": true
+          "product_id": "P0010",
+          "product_name": "Organic Brown Rice",
+          "category": "Pantry",
+          "perishable": false,
+          "quantity": 1
         }
-      ],
-      "delay_reason": null
+      ]
     },
-    "assistant_response": "Your order ECO20101 is currently In transit. Estimated delivery is 2026-04-05. You can track it here: https://tracking.ecomarket.com/ECO20101"
+    "assistant_response": "Yes. Your order ECO20106 contains at least one perishable product: Organic Whole Milk. Please monitor the delivery status to ensure it is received promptly."
   },
   {
-    "id": "example_1",
+    "id": "order_status_007",
     "intent": "order_status",
-    "customer_query": "Where is my order ECO20102?",
+    "customer_query": "Where is my package ECO20107?",
     "context": {
-      "tracking_number": "ECO20102",
-      "status": "Processing",
-      "estimated_delivery": "2026-04-15",
-      "shipping_method": "Express",
-      "shipping_region": "US-East",
-      "order_date": "2026-04-08",
-      "items": [
-        {
-          "product_id": "P0005",
-          "product_name": "Sea Salt Veggie Chips",
-          "category": "Snacks",
-          "quantity": 1,
-          "perishable": false
-        },
-        {
-          "product_id": "P0009",
-          "product_name": "Whole Grain Bread",
-          "category": "Bakery",
-          "quantity": 1,
-          "perishable": true
-        },
-        {
-          "product_id": "P0006",
-          "product_name": "Natural Bamboo Toothbrush",
-          "category": "Personal Care",
-          "quantity": 3,
-          "perishable": false
-        }
-      ],
-      "delay_reason": null
+      "tracking_number": "ECO20107",
+      "status": "In transit",
+      "shipping_region": "Canada",
+      "shipping_method": "Standard",
+      "estimated_delivery": "2026-04-18",
+      "tracking_url": "https://tracking.ecomarket.com/ECO20107"
     },
-    "assistant_response": "Your order ECO20102 is currently Processing. Estimated delivery is 2026-04-15. You can track it here: https://tracking.ecomarket.com/ECO20102"
+    "assistant_response": "Your package ECO20107 is currently in transit to Canada. The estimated delivery date is 2026-04-18. You can check real-time updates using the tracking link."
   },
   {
-    "id": "example_2",
+    "id": "order_status_008",
     "intent": "order_status",
-    "customer_query": "Where is my order ECO20112?",
-    "context": {
-      "tracking_number": "ECO20112",
-      "status": "Delivered",
-      "estimated_delivery": "2026-04-12",
-      "shipping_method": "Express",
-      "shipping_region": "US-East",
-      "order_date": "2026-04-10",
-      "items": [
-        {
-          "product_id": "P0008",
-          "product_name": "Frozen Mixed Berries",
-          "category": "Frozen",
-          "quantity": 1,
-          "perishable": true
-        }
-      ],
-      "delay_reason": null
-    },
-    "assistant_response": "Your order ECO20112 is currently Delivered. Estimated delivery is 2026-04-12. You can track it here: https://tracking.ecomarket.com/ECO20112"
-  },
-  {
-    "id": "example_3",
-    "intent": "order_status",
-    "customer_query": "Where is my order ECO20108?",
+    "customer_query": "My order ECO20108 is late. What happened?",
     "context": {
       "tracking_number": "ECO20108",
       "status": "Delayed",
-      "estimated_delivery": "2026-04-16",
-      "shipping_method": "Standard",
-      "shipping_region": "US-West",
-      "order_date": "2026-04-09",
-      "items": [
-        {
-          "product_id": "P0005",
-          "product_name": "Sea Salt Veggie Chips",
-          "category": "Snacks",
-          "quantity": 3,
-          "perishable": false
-        },
-        {
-          "product_id": "P0002",
-          "product_name": "Fresh Baby Spinach",
-          "category": "Produce",
-          "quantity": 2,
-          "perishable": true
-        }
-      ],
-      "delay_reason": null
+      "estimated_delivery": "2026-04-22",
+      "delay_reason": "Carrier delay caused by weather conditions",
+      "shipping_policy_rule": "Delays may occur due to weather conditions or carrier issues"
     },
-    "assistant_response": "Your order ECO20108 is currently Delayed. Estimated delivery is 2026-04-16. You can track it here: https://tracking.ecomarket.com/ECO20108"
+    "assistant_response": "I’m sorry your order ECO20108 is late. The delay was caused by carrier issues related to weather conditions. The updated estimated delivery date is 2026-04-22."
   },
   {
-    "id": "example_4",
+    "id": "order_status_009",
     "intent": "order_status",
-    "customer_query": "Where is my order ECO20109?",
+    "customer_query": "Can you check delivery status for ECO20109?",
     "context": {
       "tracking_number": "ECO20109",
-      "status": "Delivered",
-      "estimated_delivery": "2026-04-14",
-      "shipping_method": "Express",
-      "shipping_region": "US-West",
-      "order_date": "2026-04-09",
-      "items": [
-        {
-          "product_id": "P0006",
-          "product_name": "Natural Bamboo Toothbrush",
-          "category": "Personal Care",
-          "quantity": 2,
-          "perishable": false
-        },
-        {
-          "product_id": "P0001",
-          "product_name": "Organic Whole Milk",
-          "category": "Dairy",
-          "quantity": 3,
-          "perishable": true
-        }
-      ],
-      "delay_reason": null
-    },
-    "assistant_response": "Your order ECO20109 is currently Delivered. Estimated delivery is 2026-04-14. You can track it here: https://tracking.ecomarket.com/ECO20109"
-  },
-  {
-    "id": "example_5",
-    "intent": "order_status",
-    "customer_query": "Where is my order ECO20105?",
-    "context": {
-      "tracking_number": "ECO20105",
-      "status": "Delayed",
-      "estimated_delivery": "2026-04-03",
-      "shipping_method": "Standard",
-      "shipping_region": "Europe",
-      "order_date": "2026-04-01",
-      "items": [
-        {
-          "product_id": "P0005",
-          "product_name": "Sea Salt Veggie Chips",
-          "category": "Snacks",
-          "quantity": 3,
-          "perishable": false
-        },
-        {
-          "product_id": "P0006",
-          "product_name": "Natural Bamboo Toothbrush",
-          "category": "Personal Care",
-          "quantity": 1,
-          "perishable": false
-        }
-      ],
-      "delay_reason": null
-    },
-    "assistant_response": "Your order ECO20105 is currently Delayed. Estimated delivery is 2026-04-03. You can track it here: https://tracking.ecomarket.com/ECO20105"
-  },
-  {
-    "id": "example_6",
-    "intent": "order_status",
-    "customer_query": "Where is my order ECO20105?",
-    "context": {
-      "tracking_number": "ECO20105",
-      "status": "Delayed",
-      "estimated_delivery": "2026-04-03",
-      "shipping_method": "Standard",
-      "shipping_region": "Europe",
-      "order_date": "2026-04-01",
-      "items": [
-        {
-          "product_id": "P0005",
-          "product_name": "Sea Salt Veggie Chips",
-          "category": "Snacks",
-          "quantity": 3,
-          "perishable": false
-        },
-        {
-          "product_id": "P0006",
-          "product_name": "Natural Bamboo Toothbrush",
-          "category": "Personal Care",
-          "quantity": 1,
-          "perishable": false
-        }
-      ],
-      "delay_reason": null
-    },
-    "assistant_response": "Your order ECO20105 is currently Delayed. Estimated delivery is 2026-04-03. You can track it here: https://tracking.ecomarket.com/ECO20105"
-  },
-  {
-    "id": "example_7",
-    "intent": "order_status",
-    "customer_query": "Where is my order ECO20114?",
-    "context": {
-      "tracking_number": "ECO20114",
-      "status": "In transit",
-      "estimated_delivery": "2026-04-06",
-      "shipping_method": "Same-Day",
-      "shipping_region": "US-East",
-      "order_date": "2026-04-04",
-      "items": [
-        {
-          "product_id": "P0001",
-          "product_name": "Organic Whole Milk",
-          "category": "Dairy",
-          "quantity": 3,
-          "perishable": true
-        },
-        {
-          "product_id": "P0007",
-          "product_name": "Plant-Based Dish Soap",
-          "category": "Cleaning",
-          "quantity": 2,
-          "perishable": false
-        },
-        {
-          "product_id": "P0005",
-          "product_name": "Sea Salt Veggie Chips",
-          "category": "Snacks",
-          "quantity": 1,
-          "perishable": false
-        }
-      ],
-      "delay_reason": "High demand and logistics delay"
-    },
-    "assistant_response": "Your order ECO20114 is currently In transit. Estimated delivery is 2026-04-06. You can track it here: https://tracking.ecomarket.com/ECO20114"
-  },
-  {
-    "id": "example_8",
-    "intent": "order_status",
-    "customer_query": "Where is my order ECO20127?",
-    "context": {
-      "tracking_number": "ECO20127",
-      "status": "In transit",
-      "estimated_delivery": "2026-04-15",
-      "shipping_method": "Express",
-      "shipping_region": "Europe",
-      "order_date": "2026-04-10",
-      "items": [
-        {
-          "product_id": "P0001",
-          "product_name": "Organic Whole Milk",
-          "category": "Dairy",
-          "quantity": 3,
-          "perishable": true
-        },
-        {
-          "product_id": "P0003",
-          "product_name": "Grass-Fed Ground Beef",
-          "category": "Meat",
-          "quantity": 2,
-          "perishable": true
-        },
-        {
-          "product_id": "P0009",
-          "product_name": "Whole Grain Bread",
-          "category": "Bakery",
-          "quantity": 3,
-          "perishable": true
-        }
-      ],
-      "delay_reason": null
-    },
-    "assistant_response": "Your order ECO20127 is currently In transit. Estimated delivery is 2026-04-15. You can track it here: https://tracking.ecomarket.com/ECO20127"
-  },
-  {
-    "id": "example_9",
-    "intent": "order_status",
-    "customer_query": "Where is my order ECO20116?",
-    "context": {
-      "tracking_number": "ECO20116",
-      "status": "Delayed",
-      "estimated_delivery": "2026-04-06",
-      "shipping_method": "Express",
-      "shipping_region": "US-East",
-      "order_date": "2026-04-01",
-      "items": [
-        {
-          "product_id": "P0009",
-          "product_name": "Whole Grain Bread",
-          "category": "Bakery",
-          "quantity": 1,
-          "perishable": true
-        }
-      ],
-      "delay_reason": null
-    },
-    "assistant_response": "Your order ECO20116 is currently Delayed. Estimated delivery is 2026-04-06. You can track it here: https://tracking.ecomarket.com/ECO20116"
-  },
-  {
-    "id": "example_10",
-    "intent": "order_status",
-    "customer_query": "Where is my order ECO20129?",
-    "context": {
-      "tracking_number": "ECO20129",
-      "status": "Delayed",
-      "estimated_delivery": "2026-04-13",
-      "shipping_method": "Same-Day",
-      "shipping_region": "Europe",
-      "order_date": "2026-04-11",
-      "items": [
-        {
-          "product_id": "P0007",
-          "product_name": "Plant-Based Dish Soap",
-          "category": "Cleaning",
-          "quantity": 2,
-          "perishable": false
-        },
-        {
-          "product_id": "P0001",
-          "product_name": "Organic Whole Milk",
-          "category": "Dairy",
-          "quantity": 2,
-          "perishable": true
-        },
-        {
-          "product_id": "P0006",
-          "product_name": "Natural Bamboo Toothbrush",
-          "category": "Personal Care",
-          "quantity": 1,
-          "perishable": false
-        }
-      ],
-      "delay_reason": "High demand and logistics delay"
-    },
-    "assistant_response": "Your order ECO20129 is currently Delayed. Estimated delivery is 2026-04-13. You can track it here: https://tracking.ecomarket.com/ECO20129"
-  },
-  {
-    "id": "example_11",
-    "intent": "order_status",
-    "customer_query": "Where is my order ECO20107?",
-    "context": {
-      "tracking_number": "ECO20107",
       "status": "Processing",
-      "estimated_delivery": "2026-04-14",
-      "shipping_method": "Express",
-      "shipping_region": "Canada",
-      "order_date": "2026-04-11",
-      "items": [
-        {
-          "product_id": "P0002",
-          "product_name": "Fresh Baby Spinach",
-          "category": "Produce",
-          "quantity": 2,
-          "perishable": true
-        },
-        {
-          "product_id": "P0004",
-          "product_name": "Sparkling Mineral Water",
-          "category": "Beverages",
-          "quantity": 1,
-          "perishable": false
-        },
-        {
-          "product_id": "P0008",
-          "product_name": "Frozen Mixed Berries",
-          "category": "Frozen",
-          "quantity": 1,
-          "perishable": true
-        }
-      ],
-      "delay_reason": null
-    },
-    "assistant_response": "Your order ECO20107 is currently Processing. Estimated delivery is 2026-04-14. You can track it here: https://tracking.ecomarket.com/ECO20107"
-  },
-  {
-    "id": "example_12",
-    "intent": "order_status",
-    "customer_query": "Where is my order ECO20110?",
-    "context": {
-      "tracking_number": "ECO20110",
-      "status": "Delayed",
-      "estimated_delivery": "2026-04-14",
-      "shipping_method": "Standard",
-      "shipping_region": "Canada",
-      "order_date": "2026-04-10",
-      "items": [
-        {
-          "product_id": "P0002",
-          "product_name": "Fresh Baby Spinach",
-          "category": "Produce",
-          "quantity": 2,
-          "perishable": true
-        },
-        {
-          "product_id": "P0007",
-          "product_name": "Plant-Based Dish Soap",
-          "category": "Cleaning",
-          "quantity": 1,
-          "perishable": false
-        }
-      ],
-      "delay_reason": null
-    },
-    "assistant_response": "Your order ECO20110 is currently Delayed. Estimated delivery is 2026-04-14. You can track it here: https://tracking.ecomarket.com/ECO20110"
-  },
-  {
-    "id": "example_13",
-    "intent": "order_status",
-    "customer_query": "Where is my order ECO20118?",
-    "context": {
-      "tracking_number": "ECO20118",
-      "status": "Delayed",
-      "estimated_delivery": "2026-04-10",
-      "shipping_method": "Standard",
-      "shipping_region": "US-West",
-      "order_date": "2026-04-07",
-      "items": [
-        {
-          "product_id": "P0005",
-          "product_name": "Sea Salt Veggie Chips",
-          "category": "Snacks",
-          "quantity": 1,
-          "perishable": false
-        }
-      ],
-      "delay_reason": null
-    },
-    "assistant_response": "Your order ECO20118 is currently Delayed. Estimated delivery is 2026-04-10. You can track it here: https://tracking.ecomarket.com/ECO20118"
-  },
-  {
-    "id": "example_14",
-    "intent": "order_status",
-    "customer_query": "Where is my order ECO20104?",
-    "context": {
-      "tracking_number": "ECO20104",
-      "status": "Delayed",
-      "estimated_delivery": "2026-04-07",
+      "estimated_delivery": "2026-04-19",
       "shipping_method": "Same-Day",
-      "shipping_region": "Canada",
-      "order_date": "2026-04-01",
-      "items": [
-        {
-          "product_id": "P0005",
-          "product_name": "Sea Salt Veggie Chips",
-          "category": "Snacks",
-          "quantity": 3,
-          "perishable": false
-        },
-        {
-          "product_id": "P0004",
-          "product_name": "Sparkling Mineral Water",
-          "category": "Beverages",
-          "quantity": 3,
-          "perishable": false
-        }
-      ],
-      "delay_reason": "High demand and logistics delay"
+      "tracking_url": "https://tracking.ecomarket.com/ECO20109"
     },
-    "assistant_response": "Your order ECO20104 is currently Delayed. Estimated delivery is 2026-04-07. You can track it here: https://tracking.ecomarket.com/ECO20104"
+    "assistant_response": "Order ECO20109 is currently processing. Since it was selected for Same-Day delivery, please check the tracking link for the latest dispatch update."
   },
   {
-    "id": "example_15",
-    "intent": "order_status",
-    "customer_query": "Where is my order ECO20109?",
+    "id": "return_policy_001",
+    "intent": "return_policy",
+    "customer_query": "How do I return a product?",
     "context": {
-      "tracking_number": "ECO20109",
-      "status": "Delivered",
-      "estimated_delivery": "2026-04-14",
-      "shipping_method": "Express",
-      "shipping_region": "US-West",
-      "order_date": "2026-04-09",
-      "items": [
-        {
-          "product_id": "P0006",
-          "product_name": "Natural Bamboo Toothbrush",
-          "category": "Personal Care",
-          "quantity": 2,
-          "perishable": false
-        },
-        {
-          "product_id": "P0001",
-          "product_name": "Organic Whole Milk",
-          "category": "Dairy",
-          "quantity": 3,
-          "perishable": true
-        }
-      ],
-      "delay_reason": null
+      "return_window": "30 calendar days from delivery",
+      "condition": "unused, unwashed, original packaging",
+      "proof_required": true
     },
-    "assistant_response": "Your order ECO20109 is currently Delivered. Estimated delivery is 2026-04-14. You can track it here: https://tracking.ecomarket.com/ECO20109"
+    "assistant_response": "You may return eligible products within 30 calendar days of delivery if they are unused, unwashed, in their original packaging, and accompanied by proof of purchase."
   },
   {
-    "id": "example_16",
-    "intent": "order_status",
-    "customer_query": "Where is my order ECO20100?",
+    "id": "return_policy_002",
+    "intent": "return_policy",
+    "customer_query": "Can I return an opened hygiene product?",
     "context": {
-      "tracking_number": "ECO20100",
-      "status": "Delayed",
-      "estimated_delivery": "2026-04-13",
-      "shipping_method": "Express",
-      "shipping_region": "Europe",
-      "order_date": "2026-04-07",
-      "items": [
-        {
-          "product_id": "P0006",
-          "product_name": "Natural Bamboo Toothbrush",
-          "category": "Personal Care",
-          "quantity": 3,
-          "perishable": false
-        },
-        {
-          "product_id": "P0001",
-          "product_name": "Organic Whole Milk",
-          "category": "Dairy",
-          "quantity": 1,
-          "perishable": true
-        },
-        {
-          "product_id": "P0003",
-          "product_name": "Grass-Fed Ground Beef",
-          "category": "Meat",
-          "quantity": 2,
-          "perishable": true
-        }
-      ],
-      "delay_reason": "High demand and logistics delay"
+      "product_type": "hygiene",
+      "opened": true,
+      "return_eligibility": "not_eligible",
+      "policy_rule": "Opened hygiene and personal care products are not returnable"
     },
-    "assistant_response": "Your order ECO20100 is currently Delayed. Estimated delivery is 2026-04-13. You can track it here: https://tracking.ecomarket.com/ECO20100"
+    "assistant_response": "I’m sorry, but opened hygiene products are not eligible for return under EcoMarket’s policy. If the item arrived defective or incorrect, please contact support with your order number."
   },
   {
-    "id": "example_17",
-    "intent": "order_status",
-    "customer_query": "Where is my order ECO20114?",
+    "id": "return_policy_003",
+    "intent": "return_policy",
+    "customer_query": "Can I return a perishable item?",
     "context": {
-      "tracking_number": "ECO20114",
-      "status": "In transit",
-      "estimated_delivery": "2026-04-06",
-      "shipping_method": "Same-Day",
-      "shipping_region": "US-East",
-      "order_date": "2026-04-04",
-      "items": [
-        {
-          "product_id": "P0001",
-          "product_name": "Organic Whole Milk",
-          "category": "Dairy",
-          "quantity": 3,
-          "perishable": true
-        },
-        {
-          "product_id": "P0007",
-          "product_name": "Plant-Based Dish Soap",
-          "category": "Cleaning",
-          "quantity": 2,
-          "perishable": false
-        },
-        {
-          "product_id": "P0005",
-          "product_name": "Sea Salt Veggie Chips",
-          "category": "Snacks",
-          "quantity": 1,
-          "perishable": false
-        }
-      ],
-      "delay_reason": "High demand and logistics delay"
+      "product_type": "perishable",
+      "return_eligibility": "not_eligible_unless_damaged_or_spoiled",
+      "evidence_required": true
     },
-    "assistant_response": "Your order ECO20114 is currently In transit. Estimated delivery is 2026-04-06. You can track it here: https://tracking.ecomarket.com/ECO20114"
+    "assistant_response": "Perishable goods are generally not eligible for return unless they arrive damaged or spoiled. If that happened, please provide photos and your order number within the required reporting window."
   },
   {
-    "id": "example_18",
-    "intent": "order_status",
-    "customer_query": "Where is my order ECO20111?",
+    "id": "return_policy_004",
+    "intent": "return_policy",
+    "customer_query": "What if my product arrived damaged?",
     "context": {
-      "tracking_number": "ECO20111",
-      "status": "Delayed",
-      "estimated_delivery": "2026-04-13",
-      "shipping_method": "Standard",
-      "shipping_region": "US-East",
-      "order_date": "2026-04-06",
-      "items": [
-        {
-          "product_id": "P0008",
-          "product_name": "Frozen Mixed Berries",
-          "category": "Frozen",
-          "quantity": 2,
-          "perishable": true
-        },
-        {
-          "product_id": "P0004",
-          "product_name": "Sparkling Mineral Water",
-          "category": "Beverages",
-          "quantity": 3,
-          "perishable": false
-        },
-        {
-          "product_id": "P0006",
-          "product_name": "Natural Bamboo Toothbrush",
-          "category": "Personal Care",
-          "quantity": 3,
-          "perishable": false
-        }
-      ],
-      "delay_reason": null
+      "issue_type": "damaged_product",
+      "reporting_window": "48 hours after delivery",
+      "evidence_required": "photos and order number"
     },
-    "assistant_response": "Your order ECO20111 is currently Delayed. Estimated delivery is 2026-04-13. You can track it here: https://tracking.ecomarket.com/ECO20111"
+    "assistant_response": "I’m sorry your product arrived damaged. Please report the issue within 48 hours of delivery and include photos plus your order number so support can review the case."
   },
   {
-    "id": "example_19",
-    "intent": "order_status",
-    "customer_query": "Where is my order ECO20110?",
+    "id": "return_policy_005",
+    "intent": "return_policy",
+    "customer_query": "When will I receive my refund?",
     "context": {
-      "tracking_number": "ECO20110",
-      "status": "Delayed",
-      "estimated_delivery": "2026-04-14",
-      "shipping_method": "Standard",
-      "shipping_region": "Canada",
-      "order_date": "2026-04-10",
-      "items": [
-        {
-          "product_id": "P0002",
-          "product_name": "Fresh Baby Spinach",
-          "category": "Produce",
-          "quantity": 2,
-          "perishable": true
-        },
-        {
-          "product_id": "P0007",
-          "product_name": "Plant-Based Dish Soap",
-          "category": "Cleaning",
-          "quantity": 1,
-          "perishable": false
-        }
-      ],
-      "delay_reason": null
+      "refund_time": "5–10 business days after inspection",
+      "refund_method": "original payment method",
+      "shipping_fees": "non-refundable unless EcoMarket made an error"
     },
-    "assistant_response": "Your order ECO20110 is currently Delayed. Estimated delivery is 2026-04-14. You can track it here: https://tracking.ecomarket.com/ECO20110"
+    "assistant_response": "Once the returned item is received and inspected, refunds are typically processed within 5–10 business days to the original payment method."
+  },
+  {
+    "id": "shipping_001",
+    "intent": "shipping",
+    "customer_query": "How long does shipping take?",
+    "context": {
+      "standard_shipping": "3–7 business days",
+      "express_shipping": "1–3 business days",
+      "same_day": "select locations only"
+    },
+    "assistant_response": "Standard shipping usually takes 3–7 business days. Express shipping usually takes 1–3 business days, and same-day delivery is available only in select locations."
+  },
+  {
+    "id": "shipping_002",
+    "intent": "shipping",
+    "customer_query": "Do you ship internationally?",
+    "context": {
+      "international_shipping": true,
+      "additional_costs": "customs duties and import taxes may apply",
+      "customer_responsibility": true
+    },
+    "assistant_response": "Yes, EcoMarket ships internationally. Please note that customs duties, import taxes, or local fees may apply and are the customer’s responsibility."
+  },
+  {
+    "id": "shipping_003",
+    "intent": "shipping",
+    "customer_query": "Why is my delivery late?",
+    "context": {
+      "possible_delay_reasons": [
+        "weather conditions",
+        "carrier issues",
+        "high demand",
+        "regional logistics constraints"
+      ]
+    },
+    "assistant_response": "Delivery delays may occur due to weather conditions, carrier issues, high demand, or regional logistics constraints. Please check your tracking link for the latest status."
+  },
+  {
+    "id": "shipping_004",
+    "intent": "shipping",
+    "customer_query": "Is shipping free?",
+    "context": {
+      "free_shipping": "may apply above a defined order threshold",
+      "fees_depend_on": [
+        "location",
+        "order size",
+        "delivery method"
+      ]
+    },
+    "assistant_response": "Free shipping may apply when an order exceeds the required threshold. Shipping fees can vary depending on location, order size, and delivery method."
+  },
+  {
+    "id": "shipping_005",
+    "intent": "shipping",
+    "customer_query": "What happens if delivery fails?",
+    "context": {
+      "failed_delivery_reason": "incorrect address or customer unavailable",
+      "possible_fee": "additional shipping fees may apply"
+    },
+    "assistant_response": "If delivery fails because of an incorrect address or because the customer was unavailable, additional shipping fees may apply."
+  },
+  {
+    "id": "inventory_001",
+    "intent": "inventory",
+    "customer_query": "Is product P0001 in stock?",
+    "context": {
+      "product_id": "P0001",
+      "product_name": "Organic Whole Milk",
+      "stock_quantity": 120,
+      "warehouse_location": "WH-A",
+      "perishable": true
+    },
+    "assistant_response": "Product P0001, Organic Whole Milk, is currently in stock with 120 units available in warehouse WH-A."
+  },
+  {
+    "id": "inventory_002",
+    "intent": "inventory",
+    "customer_query": "Is Organic Whole Milk perishable?",
+    "context": {
+      "product_id": "P0001",
+      "product_name": "Organic Whole Milk",
+      "category": "Dairy",
+      "perishable": true,
+      "shelf_life_days": 14
+    },
+    "assistant_response": "Yes. Organic Whole Milk is a perishable dairy product with a limited shelf life."
+  },
+  {
+    "id": "inventory_003",
+    "intent": "inventory",
+    "customer_query": "What is the expiration date of product P0003?",
+    "context": {
+      "product_id": "P0003",
+      "product_name": "Grass-Fed Ground Beef",
+      "perishable": true,
+      "expiration_date": "2026-04-07"
+    },
+    "assistant_response": "Product P0003, Grass-Fed Ground Beef, is perishable and has an expiration date of 2026-04-07."
+  },
+  {
+    "id": "inventory_004",
+    "intent": "inventory",
+    "customer_query": "Where is product P0007 stored?",
+    "context": {
+      "product_id": "P0007",
+      "product_name": "Plant-Based Dish Soap",
+      "warehouse_location": "WH-C",
+      "stock_quantity": 150
+    },
+    "assistant_response": "Product P0007, Plant-Based Dish Soap, is stored in warehouse WH-C and currently has 150 units available."
+  },
+  {
+    "id": "inventory_005",
+    "intent": "inventory",
+    "customer_query": "Does product P0009 have a short shelf life?",
+    "context": {
+      "product_id": "P0009",
+      "product_name": "Whole Grain Bread",
+      "category": "Bakery",
+      "perishable": true,
+      "shelf_life_days": 7
+    },
+    "assistant_response": "Yes. Product P0009, Whole Grain Bread, is perishable and has a short shelf life of approximately 7 days."
+  },
+  {
+    "id": "product_001",
+    "intent": "product",
+    "customer_query": "What is Organic Whole Milk?",
+    "context": {
+      "product_id": "P0001",
+      "product_name": "Organic Whole Milk",
+      "category": "Dairy",
+      "description": "A high-quality dairy product offered by EcoMarket and designed to meet sustainable standards."
+    },
+    "assistant_response": "Organic Whole Milk is a dairy product offered by EcoMarket. It is designed to meet sustainable and eco-friendly standards."
+  },
+  {
+    "id": "product_002",
+    "intent": "product",
+    "customer_query": "Is Plant-Based Dish Soap eco-friendly?",
+    "context": {
+      "product_id": "P0007",
+      "product_name": "Plant-Based Dish Soap",
+      "category": "Cleaning",
+      "attributes": [
+        "plant-based",
+        "eco-friendly",
+        "sustainable"
+      ]
+    },
+    "assistant_response": "Yes. Plant-Based Dish Soap is part of EcoMarket’s eco-friendly cleaning catalog and is designed with sustainability in mind."
+  },
+  {
+    "id": "product_003",
+    "intent": "product",
+    "customer_query": "Tell me about Whole Grain Bread",
+    "context": {
+      "product_id": "P0009",
+      "product_name": "Whole Grain Bread",
+      "category": "Bakery",
+      "description": "A bakery product designed for everyday use and aligned with EcoMarket’s sustainability standards."
+    },
+    "assistant_response": "Whole Grain Bread is a bakery product offered by EcoMarket for everyday use. It is part of the sustainable product catalog."
+  },
+  {
+    "id": "product_004",
+    "intent": "product",
+    "customer_query": "What category is Frozen Mixed Berries?",
+    "context": {
+      "product_id": "P0008",
+      "product_name": "Frozen Mixed Berries",
+      "category": "Frozen"
+    },
+    "assistant_response": "Frozen Mixed Berries belongs to the Frozen category."
+  },
+  {
+    "id": "product_005",
+    "intent": "product",
+    "customer_query": "Is Natural Bamboo Toothbrush sustainable?",
+    "context": {
+      "product_id": "P0006",
+      "product_name": "Natural Bamboo Toothbrush",
+      "category": "Personal Care",
+      "attributes": [
+        "bamboo",
+        "eco-friendly",
+        "sustainable"
+      ]
+    },
+    "assistant_response": "Yes. Natural Bamboo Toothbrush is a sustainable personal care item made with eco-friendly materials."
+  },
+  {
+    "id": "human_001",
+    "intent": "human",
+    "customer_query": "I want to speak to a human",
+    "context": {
+      "sentiment": "neutral",
+      "needs_human": true,
+      "escalation_reason": "customer requested human agent"
+    },
+    "assistant_response": "I understand. I’ll escalate your request to a human support agent who can assist you further."
+  },
+  {
+    "id": "human_002",
+    "intent": "human",
+    "customer_query": "This is unacceptable service",
+    "context": {
+      "sentiment": "negative",
+      "needs_human": true,
+      "escalation_reason": "customer dissatisfaction"
+    },
+    "assistant_response": "I’m sorry for this experience. I’ll escalate your case to a human support specialist so it can be reviewed properly."
+  },
+  {
+    "id": "human_003",
+    "intent": "human",
+    "customer_query": "I am very upset about my delayed order",
+    "context": {
+      "sentiment": "angry",
+      "needs_human": true,
+      "topic": "delayed order"
+    },
+    "assistant_response": "I’m really sorry about the frustration caused by the delay. I’ll escalate your case to a human agent for personal assistance."
+  },
+  {
+    "id": "human_004",
+    "intent": "human",
+    "customer_query": "I want to talk to a supervisor",
+    "context": {
+      "sentiment": "negative",
+      "needs_human": true,
+      "requested_role": "supervisor"
+    },
+    "assistant_response": "I understand. I’ll help escalate your request so a supervisor or senior support representative can review it."
+  },
+  {
+    "id": "human_005",
+    "intent": "human",
+    "customer_query": "This is the worst experience I have had",
+    "context": {
+      "sentiment": "very_negative",
+      "needs_human": true,
+      "escalation_priority": "high"
+    },
+    "assistant_response": "I’m very sorry about your experience. This should be handled by a human support specialist, and I’ll escalate it with priority."
+  },
+  {
+    "id": "general_001",
+    "intent": "general",
+    "customer_query": "What can you help me with?",
+    "context": {
+      "supported_topics": [
+        "orders",
+        "returns",
+        "shipping",
+        "inventory",
+        "product information",
+        "human escalation"
+      ]
+    },
+    "assistant_response": "I can help with order tracking, returns, shipping, inventory, product information, and general support requests."
+  },
+  {
+    "id": "general_002",
+    "intent": "general",
+    "customer_query": "Do you have customer support?",
+    "context": {
+      "support_channels": [
+        "AI assistant",
+        "human agent escalation"
+      ]
+    },
+    "assistant_response": "Yes. EcoMarket provides customer support through this assistant, and complex cases can be escalated to a human agent."
+  },
+  {
+    "id": "general_003",
+    "intent": "general",
+    "customer_query": "How does this assistant work?",
+    "context": {
+      "assistant_capabilities": [
+        "retrieve policy information",
+        "check orders",
+        "answer product questions",
+        "route complex cases"
+      ]
+    },
+    "assistant_response": "This assistant can help answer questions about orders, shipping, returns, product information, and inventory. If needed, it can also escalate complex cases to a human agent."
+  },
+  {
+    "id": "general_004",
+    "intent": "general",
+    "customer_query": "Can you help me?",
+    "context": {
+      "generic_support": true
+    },
+    "assistant_response": "Of course. Please tell me what you need help with, and I’ll do my best to assist you."
+  },
+  {
+    "id": "general_005",
+    "intent": "general",
+    "customer_query": "What services do you offer?",
+    "context": {
+      "services": [
+        "order tracking",
+        "returns guidance",
+        "shipping support",
+        "product information",
+        "inventory assistance"
+      ]
+    },
+    "assistant_response": "I can assist with order tracking, returns guidance, shipping questions, product information, and inventory-related inquiries."
   }
 ]
