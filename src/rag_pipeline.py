@@ -26,8 +26,8 @@ VECTORSTORE_DIR = Path("vectorstore/faiss_index")
 EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
 
 # Chunking strategy — justified by EDA in docs/eda_chunking_analysis.md
-CHUNK_SIZE = 700
-CHUNK_OVERLAP = 100
+CHUNK_SIZE = 391
+CHUNK_OVERLAP = 45
 
 # ── embedding model (singleton) ───────────────────────────────────────────────
 

@@ -284,7 +284,6 @@ def load_all_documents() -> List[Document]:
         ("inventory", load_inventory),
         ("product_catalog", load_product_catalog),
         ("orders", load_orders_as_docs),
-        ("support_examples", load_support_examples),
     ]
 
     for name, loader in loaders:
