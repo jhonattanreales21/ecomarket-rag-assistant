@@ -207,8 +207,8 @@ Open **http://localhost:8501** in your browser.
 | Question | Intent triggered |
 |---|---|
 | `Where is my order ECO20105?` | `order_status` |
-| `Why is my order delayed?` | `order_status` |
-| `Does my order contain perishable products?` | `order_status` |
+| `Why is my order ECO20111 delayed?` | `order_status` |
+| `Does my order ECO20120 contain perishable products?` | `order_status` |
 | `Can I return an opened hygiene product?` | `return_policy` |
 | `What is the return window for electronics?` | `return_policy` |
 | `What is the shipping policy for delayed orders?` | `shipping` |

@@ -114,6 +114,7 @@ if user_input:
     with st.chat_message("user"):
         st.markdown(user_input)
 
+    # Intent detection and routing
     intent = detect_intent(user_input)
     st.session_state.last_intent = intent
     st.session_state.rag_used = False
@@ -202,13 +203,43 @@ if user_input:
             # short-word substring false positives (e.g. "is" matching "d[is]h")
             if not product_summary:
                 _STOPWORDS = {
-                    "what", "is", "the", "of", "a", "an", "how", "does", "do",
-                    "tell", "me", "about", "for", "in", "on", "at", "its", "are",
-                    "was", "were", "will", "would", "could", "should", "which",
-                    "have", "has", "can", "any", "some", "this", "that", "your",
+                    "what",
+                    "is",
+                    "the",
+                    "of",
+                    "a",
+                    "an",
+                    "how",
+                    "does",
+                    "do",
+                    "tell",
+                    "me",
+                    "about",
+                    "for",
+                    "in",
+                    "on",
+                    "at",
+                    "its",
+                    "are",
+                    "was",
+                    "were",
+                    "will",
+                    "would",
+                    "could",
+                    "should",
+                    "which",
+                    "have",
+                    "has",
+                    "can",
+                    "any",
+                    "some",
+                    "this",
+                    "that",
+                    "your",
                 }
                 content_words = [
-                    w.strip("?.,!") for w in user_input.split()
+                    w.strip("?.,!")
+                    for w in user_input.split()
                     if w.strip("?.,!").lower() not in _STOPWORDS
                     and len(w.strip("?.,!")) > 2
                 ]
