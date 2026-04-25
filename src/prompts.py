@@ -1,145 +1,286 @@
+"""Prompt builders for the EcoMarket RAG assistant.
+
+Each builder constructs a self-contained prompt for Gemma 2B that includes:
+- A role / persona description
+- Strict grounding rules (no hallucination)
+- Retrieved RAG context (when available)
+- Structured data (orders, inventory) when directly relevant
+- Few-shot examples from support_examples_enhanced.json
+- The user's current question
+"""
+
 import json
 from pathlib import Path
 
-EXAMPLES_PATH = Path("data/support_examples.json")
+EXAMPLES_PATH = Path("data/support_examples_enhanced.json")
+
+# ── few-shot helpers ──────────────────────────────────────────────────────────
 
 
-def _load_examples():
-    """Load all few-shot examples from the JSON file."""
+def _load_examples() -> list[dict]:
+    """Load all few-shot examples from the enhanced JSON file."""
+    if not EXAMPLES_PATH.exists():
+        return []
     with open(EXAMPLES_PATH, "r", encoding="utf-8") as f:
         return json.load(f)
 
 
-def _format_examples_for_intent(intent: str, max_examples: int = 3) -> str:
-    """Return formatted few-shot example blocks for the given intent."""
+def _format_examples(intent: str, max_examples: int = 2) -> str:
+    """Return formatted few-shot blocks for the given intent."""
     examples = _load_examples()
-    selected = [e for e in examples if e["intent"] == intent][:max_examples]
-
+    selected = [e for e in examples if e.get("intent") == intent][:max_examples]
     if not selected:
         return ""
 
-    blocks = []
+    header = "--- Few-shot examples ---"
+    blocks = [header]
     for ex in selected:
         blocks.append(
-            f"Example\n"
             f"Customer: {ex['customer_query']}\n"
-            f"Context: {json.dumps(ex['context'], ensure_ascii=False)}\n"
             f"Assistant: {ex['assistant_response']}"
         )
-
+    blocks.append("--- End of examples ---")
     return "\n\n".join(blocks)
 
 
-def build_order_prompt(order: dict, user_query: str) -> str:
-    """Build a prompt for order status queries, injecting order data and few-shot examples."""
-    examples = _format_examples_for_intent("order_status", max_examples=5)
+# ── shared persona / rules ────────────────────────────────────────────────────
 
-    return f"""
-You are a friendly and empathetic customer support agent for EcoMarket.
+_PERSONA = (
+    "You are a friendly, empathetic, and professional customer support agent for EcoMarket, "
+    "a sustainable products e-commerce company."
+)
 
-Your role is to assist customers with return requests based strictly on the
-return policy provided below.
+_GROUNDING_RULE = (
+    "IMPORTANT: Answer ONLY based on the information provided below. "
+    "Do NOT invent facts, policies, or product details. "
+    "If the provided context does not contain enough information to answer the question, "
+    "say: \"I'm sorry, I don't have enough information to answer that question. "
+    'Please contact our support team for assistance."'
+)
 
-Rules:
-- Determine clearly whether the product is eligible for return based on the policy.
-- If the return IS eligible: explain the process step by step in a clear and
-  encouraging tone.
-- If the return is NOT eligible: communicate the decision respectfully and with
-  empathy. Never be dismissive. Offer an alternative if possible (e.g., contacting
-  support for special review, or product care advice).
-- Do not invent exceptions or policies that are not in the document.
-- Always acknowledge the customer's situation before delivering the decision.
 
+# ── intent-specific prompt builders ──────────────────────────────────────────
+
+
+def build_order_prompt(order: dict, user_query: str, rag_context: str = "") -> str:
+    """Build a prompt for order status queries.
+
+    Args:
+        order: Structured order dict from orders_enhanced.json.
+        user_query: The user's raw question.
+        rag_context: Retrieved chunks from the vectorstore (optional).
+
+    Returns:
+        Formatted prompt string.
+    """
+    examples = _format_examples("order_status", max_examples=3)
+
+    items = order.get("items", [])
+    items_text = "\n".join(
+        f"  - {it.get('product_name', '?')} x{it.get('quantity', '?')} "
+        f"(perishable: {it.get('perishable', '?')})"
+        for it in items
+    )
+    delay_reason = order.get("delay_reason", "No delay recorded.")
+
+    rag_section = (
+        f"\nRelevant policy / shipping context:\n{rag_context}\n" if rag_context else ""
+    )
+
+    return f"""{_PERSONA}
+
+{_GROUNDING_RULE}
 
 {examples}
 
-Current customer query:
-{user_query}
-
-Current order data:
+Order data (authoritative — do not contradict this):
 - Tracking number: {order['tracking_number']}
 - Status: {order['status']}
+- Order date: {order.get('order_date', 'N/A')}
 - Estimated delivery: {order['estimated_delivery']}
-- Tracking link: {order['tracking_url']}
+- Shipping method: {order.get('shipping_method', 'N/A')}
+- Region: {order.get('shipping_region', 'N/A')}
+- Delay reason: {delay_reason}
+- Items:
+{items_text}
+- Tracking link: {order.get('tracking_url', 'N/A')}
+{rag_section}
+Customer question: {user_query}
 
-Write the best response for the customer.
-""".strip()
-
-
-def build_return_prompt(policy_text: str, user_query: str) -> str:
-    """Build a prompt for return policy queries, injecting the policy text and few-shot examples."""
-    examples = _format_examples_for_intent("return_policy", max_examples=5)
-
-    return f"""
-You are a friendly and professional customer support agent for EcoMarket,
-a sustainable products e-commerce company.
-
-Your role is to help customers understand the return and refund policy clearly and empathetically.
-
-Rules:
-- Only use the return policy provided below. Do not invent policies or exceptions.
-- If the return is allowed, explain the steps the customer should follow.
-- If the return is not allowed, explain why clearly and respectfully.
-- If the customer's case is unclear, ask for the order number or product name.
-- Keep your response concise, warm and professional.
-
-{examples}
-
-Customer query:
-{user_query}
-
-Return policy:
-{policy_text}
-
-Write the best response for the customer.
-""".strip()
+Write a concise, warm, and accurate response using only the data above.""".strip()
 
 
-def build_human_prompt(user_query: str) -> str:
-    """Build a prompt for escalation cases where the customer needs a human agent."""
-    examples = _format_examples_for_intent("human", max_examples=2)
+def build_return_prompt(user_query: str, rag_context: str) -> str:
+    """Build a prompt for return policy queries, grounded in RAG context.
 
-    return f"""
-You are a friendly and professional customer support agent for EcoMarket,
-a sustainable products e-commerce company.
+    Args:
+        user_query: The user's raw question.
+        rag_context: Retrieved chunks from the returns policy vectorstore.
 
-Your role is to handle sensitive or frustrated customers with empathy and direct them to human support.
+    Returns:
+        Formatted prompt string.
+    """
+    examples = _format_examples("return_policy", max_examples=3)
 
-Rules:
-- Acknowledge the customer's frustration before anything else.
-- Do not try to resolve the issue yourself — explain that a human specialist will follow up.
-- Do not make promises about timelines or outcomes.
-- Keep the message brief, warm and reassuring.
+    return f"""{_PERSONA}
+
+{_GROUNDING_RULE}
 
 {examples}
 
-Customer query:
-{user_query}
+Return policy context (retrieved from official documents):
+{rag_context}
 
-Write the best response for the customer.
-""".strip()
+Customer question: {user_query}
+
+Based strictly on the policy context above, provide a clear, empathetic answer.
+If the return is eligible, explain the steps. If not, explain why respectfully.""".strip()
 
 
-def build_general_prompt(user_query: str) -> str:
-    """Build a prompt for general or out-of-scope queries."""
-    examples = _format_examples_for_intent("general", max_examples=2)
+def build_shipping_prompt(user_query: str, rag_context: str) -> str:
+    """Build a prompt for shipping policy queries.
 
-    return f"""
-You are a friendly and professional customer support agent for EcoMarket,
-a sustainable products e-commerce company.
+    Args:
+        user_query: The user's raw question.
+        rag_context: Retrieved chunks from the shipping policy vectorstore.
 
-Your role is to assist customers with general questions in a helpful and welcoming way.
+    Returns:
+        Formatted prompt string.
+    """
+    examples = _format_examples("shipping", max_examples=3)
 
-Rules:
-- Answer general questions about EcoMarket clearly and concisely.
-- If the question is outside your scope, explain what you can help with instead.
-- Do not make up information about products, policies or services.
-- Keep your response brief, warm and professional.
+    return f"""{_PERSONA}
+
+{_GROUNDING_RULE}
 
 {examples}
 
-Customer query:
-{user_query}
+Shipping policy context (retrieved from official documents):
+{rag_context}
 
-Write the best response for the customer.
-""".strip()
+Customer question: {user_query}
+
+Based strictly on the shipping policy above, give a direct, helpful, and polite answer.""".strip()
+
+
+def build_product_prompt(user_query: str, rag_context: str) -> str:
+    """Build a prompt for product information queries.
+
+    Args:
+        user_query: The user's raw question.
+        rag_context: Retrieved chunks from the product catalog vectorstore.
+
+    Returns:
+        Formatted prompt string.
+    """
+    examples = _format_examples("product", max_examples=3)
+
+    return f"""{_PERSONA}
+
+{_GROUNDING_RULE}
+
+{examples}
+
+Product catalog context (retrieved from official documents):
+{rag_context}
+
+Customer question: {user_query}
+
+Describe the product clearly and concisely based only on the context above.""".strip()
+
+
+def build_inventory_prompt(
+    user_query: str,
+    rag_context: str,
+    product_summary: str = "",
+) -> str:
+    """Build a prompt for inventory / availability queries.
+
+    Args:
+        user_query: The user's raw question.
+        rag_context: Retrieved chunks from the inventory vectorstore.
+        product_summary: Structured product facts from inventory_service (optional).
+
+    Returns:
+        Formatted prompt string.
+    """
+    examples = _format_examples("inventory", max_examples=3)
+
+    structured_section = (
+        f"\nStructured inventory record (authoritative):\n{product_summary}\n"
+        if product_summary
+        else ""
+    )
+
+    return f"""{_PERSONA}
+
+{_GROUNDING_RULE}
+
+{examples}
+
+Inventory context (retrieved):
+{rag_context}
+{structured_section}
+Customer question: {user_query}
+
+Answer with specific stock and product details based only on the data above.""".strip()
+
+
+def build_human_prompt(user_query: str, rag_context: str = "") -> str:
+    """Build an escalation prompt for upset or frustrated customers.
+
+    Args:
+        user_query: The user's raw question.
+        rag_context: Optional retrieved support examples.
+
+    Returns:
+        Formatted prompt string.
+    """
+    examples = _format_examples("human", max_examples=3)
+
+    return f"""{_PERSONA}
+
+Your role right now is to acknowledge a frustrated customer and escalate to a human specialist.
+
+Rules:
+- Acknowledge the customer's feelings before anything else.
+- Do NOT attempt to resolve the issue yourself.
+- Reassure the customer that a human specialist will contact them.
+- Do NOT make promises about timelines or outcomes.
+- Keep the message brief, warm, and reassuring.
+
+{examples}
+
+Customer message: {user_query}
+
+Write a short, empathetic escalation message.""".strip()
+
+
+def build_general_prompt(user_query: str, rag_context: str = "") -> str:
+    """Build a catch-all prompt for general customer questions.
+
+    Args:
+        user_query: The user's raw question.
+        rag_context: Retrieved chunks from the vectorstore (optional).
+
+    Returns:
+        Formatted prompt string.
+    """
+    examples = _format_examples("general", max_examples=3)
+
+    rag_section = (
+        f"\nContext retrieved from knowledge base:\n{rag_context}\n"
+        if rag_context
+        else ""
+    )
+
+    return f"""{_PERSONA}
+
+{_GROUNDING_RULE}
+
+{examples}
+{rag_section}
+Customer question: {user_query}
+
+Provide a helpful, concise, and accurate answer.
+If the question is outside your scope, explain what you can help with.""".strip()
