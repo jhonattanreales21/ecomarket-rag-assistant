@@ -10,7 +10,11 @@ se puede fijar una fecha de demo antes de iniciar Streamlit:
 $env:ECOMARKET_AGENT_TODAY="2026-05-06"
 uv run streamlit run app.py
 ```
+or 
 
+```bash
+ECOMARKET_AGENT_TODAY="2026-05-06" uv run streamlit run app.py
+```
 ## 1. Caso exitoso: producto no perecedero
 
 Prompt:
